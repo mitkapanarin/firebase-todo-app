@@ -33,11 +33,7 @@ const Signup = () => {
         success: "Successfully created user!",
         error: "Could not create user!",
       })
-      .then((res) => console.log(res))
-      .then(() => {
-        navigate("/login");
-        toast.info("Please login to continue");
-      })
+      .then(() => navigate("/profile"))
       .catch((err) => toast.error(err));
   };
 

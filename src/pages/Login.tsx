@@ -29,8 +29,7 @@ const Login = () => {
         success: "Successfully Logged in!",
         error: "Could not login!",
       })
-      .then((res) => console.log(res))
-      .then(navigate("/profile"))
+      .then(() => navigate("/profile"))
       .catch((err) => toast.error(err));
   };
 

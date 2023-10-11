@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import { systemSlice } from "./Slices/systemSlice";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { UserAuthAPI, useEmailSignupMutation } from "./API/userAuthAPI";
+import { userSlice, loginFn, logoutFn } from "./Slices/userSlice";
 
 const persistConfig = {
   key: "root",
@@ -15,13 +16,18 @@ const persistedSystemReducer = persistReducer(
   systemSlice.reducer
 );
 
+const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
+
 export const store = configureStore({
   reducer: {
     system: persistedSystemReducer,
+    user: persistedUserReducer,
     [UserAuthAPI.reducerPath]: UserAuthAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(UserAuthAPI.middleware),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(UserAuthAPI.middleware),
 });
 
 export const persistedStore = persistStore(store);
@@ -31,4 +37,4 @@ export type AppDispatch = typeof store.dispatch;
 
 setupListeners(store.dispatch);
 
-export { useEmailSignupMutation };
+export { useEmailSignupMutation, logoutFn, loginFn };
