@@ -27,7 +27,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const mode: string = useSelector((x: RootState) => x.system.mode);
-  // const token: string = useSelector((x: RootState) => x.user.token);
+  const userUid: string = useSelector((x: RootState) => x.user.userUid);
   const iconStyles =
     "w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white";
 
@@ -75,65 +75,65 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
             {AppName}
           </div>
           <ul className="space-y-2 font-medium">
-            {/* {token && ( */}
-            <NavLink
-              to="/"
-              label="Dashboard"
-              icon={<ChartPieIcon className={iconStyles} />}
-            />
-            {/* )} */}
+            {userUid && (
+              <NavLink
+                to="/"
+                label="Dashboard"
+                icon={<ChartPieIcon className={iconStyles} />}
+              />
+            )}
             <NavLink
               to="/events"
               label="Events"
               icon={<CalendarDaysIcon className={iconStyles} />}
             />
-            {/* {token && ( */}
-            <>
-              <NavLink
-                to="/bookmark"
-                label="Bookmark"
-                icon={<BookmarkIcon className={iconStyles} />}
-              />
-              <NavLink
-                to="/purchase-history"
-                label="Purchase History"
-                icon={<ReceiptPercentIcon className={iconStyles} />}
-              />
-              <NavLink
-                to="/profile"
-                label="Profile"
-                icon={<UserCircleIcon className={iconStyles} />}
-              />
-              <NavLink
-                to="/shopping-cart"
-                label="Shopping Cart"
-                icon={<ShoppingCartIcon className={iconStyles} />}
-              />
-            </>
-            {/* )} */}
+            {userUid && (
+              <>
+                <NavLink
+                  to="/bookmark"
+                  label="Bookmark"
+                  icon={<BookmarkIcon className={iconStyles} />}
+                />
+                <NavLink
+                  to="/purchase-history"
+                  label="Purchase History"
+                  icon={<ReceiptPercentIcon className={iconStyles} />}
+                />
+                <NavLink
+                  to="/profile"
+                  label="Profile"
+                  icon={<UserCircleIcon className={iconStyles} />}
+                />
+                <NavLink
+                  to="/shopping-cart"
+                  label="Shopping Cart"
+                  icon={<ShoppingCartIcon className={iconStyles} />}
+                />
+              </>
+            )}
 
-            {/* {token && ( */}
-            <NavLink
-              to="/signup"
-              label="Signout"
-              icon={<ArrowRightOnRectangleIcon className={iconStyles} />}
-            />
-            {/* )} */}
-
-            {/* {!token && ( */}
-            <>
-              <NavLink
-                to="/login"
-                label="Login"
-                icon={<LockClosedIcon className={iconStyles} />}
-              />
+            {userUid && (
               <NavLink
                 to="/signup"
-                label="Signup"
-                icon={<UserIcon className={iconStyles} />}
+                label="Signout"
+                icon={<ArrowRightOnRectangleIcon className={iconStyles} />}
               />
-            </>
-            {/* )} */}
+            )}
+
+            {!userUid && (
+              <>
+                <NavLink
+                  to="/login"
+                  label="Login"
+                  icon={<LockClosedIcon className={iconStyles} />}
+                />
+                <NavLink
+                  to="/signup"
+                  label="Signup"
+                  icon={<UserIcon className={iconStyles} />}
+                />
+              </>
+            )}
             <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white :bg-gray-700 group">
               {isDarkMode ? (
                 <MoonIcon className={iconStyles} />
