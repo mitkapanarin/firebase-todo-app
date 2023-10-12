@@ -1,6 +1,17 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ErrorPage, Home, Signup, Login, ProfilePage } from "./pages";
+import {
+  Tasks,
+  ErrorPage,
+  Home,
+  Signup,
+  Login,
+  ProfilePage,
+  ForgotPassword,
+  ResetPassword,
+  ArchiveTasks,
+  PricingPage,
+} from "./pages";
 import Sidebar from "./components/Sidebar/Sidebar";
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -8,6 +19,7 @@ import { auth } from "./config/firebase-config";
 import { loginFn, logoutFn } from "./store";
 // import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
+import { AuthenticationRoute, ProtectedRoutes } from "./pages/utils";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -35,9 +47,20 @@ const App = () => {
       <Sidebar>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/premium" element={<PricingPage />} />
+
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/archive" element={<ArchiveTasks />} />
+          </Route>
+
+          <Route element={<AuthenticationRoute />}>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+          </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Sidebar>

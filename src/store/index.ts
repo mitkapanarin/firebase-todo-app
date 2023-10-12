@@ -10,6 +10,7 @@ import {
   useGoogleSignupMutation,
   useSendResetPassWordEmailMutation,
   useSetNewPassWordMutation,
+  useLogoutMutation,
 } from "./API/userAuthAPI";
 import { userSlice, loginFn, logoutFn } from "./Slices/userSlice";
 
@@ -52,4 +53,5 @@ export {
   useGoogleSignupMutation,
   useSendResetPassWordEmailMutation,
   useSetNewPassWordMutation,
+  useLogoutMutation,
 };

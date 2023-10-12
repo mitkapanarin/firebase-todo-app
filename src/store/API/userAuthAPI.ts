@@ -7,6 +7,7 @@ import {
   signInWithPopup,
   sendPasswordResetEmail,
   confirmPasswordReset,
+  signOut,
 } from "firebase/auth";
 import { IUserData } from "../../types/interface";
 
@@ -114,6 +115,22 @@ export const UserAuthAPI = createApi({
       invalidatesTags: ["User"],
     }),
 
+    logout: builder.mutation<void, null>({
+      queryFn: async () => {
+        try {
+          await signOut(auth);
+          return {
+            data: undefined,
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      invalidatesTags: ["User"],
+    }),
+
     // make another endpoint for updating user data
   }),
 });
@@ -124,4 +141,5 @@ export const {
   useGoogleSignupMutation,
   useSendResetPassWordEmailMutation,
   useSetNewPassWordMutation,
+  useLogoutMutation,
 } = UserAuthAPI;

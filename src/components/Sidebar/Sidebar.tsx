@@ -4,10 +4,8 @@ import {
   ChartPieIcon,
   LockClosedIcon,
   BookmarkIcon,
-  ReceiptPercentIcon,
   UserIcon,
   MoonIcon,
-  CalendarDaysIcon,
   UserCircleIcon,
   ArrowRightOnRectangleIcon,
   SunIcon,
@@ -20,9 +18,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import { themeSwitch, ThemeTypesEnum } from "../../store/Slices/systemSlice";
 import { gradientTextStyles } from "../Text/TextStyles";
+import { useLogoutMutation } from "../../store/index";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
+  const [logout] = useLogoutMutation();
+
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -38,6 +42,15 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   }, [isDarkMode]);
 
   const AppName: string = "Todo App";
+
+  const appSignout = async () =>
+    await toast
+      .promise(logout(null).unwrap, {
+        pending: "Logging out...",
+        success: "Logout successful",
+        error: "Logout failed",
+      })
+      .then(() => navigate("/login"));
 
   return (
     <div>
@@ -77,27 +90,17 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           <ul className="space-y-2 font-medium">
             {userUid && (
               <NavLink
-                to="/"
-                label="Dashboard"
+                to="/tasks"
+                label="Tasks"
                 icon={<ChartPieIcon className={iconStyles} />}
               />
             )}
-            <NavLink
-              to="/events"
-              label="Events"
-              icon={<CalendarDaysIcon className={iconStyles} />}
-            />
             {userUid && (
               <>
                 <NavLink
-                  to="/bookmark"
-                  label="Bookmark"
+                  to="/archive"
+                  label="Archive"
                   icon={<BookmarkIcon className={iconStyles} />}
-                />
-                <NavLink
-                  to="/purchase-history"
-                  label="Purchase History"
-                  icon={<ReceiptPercentIcon className={iconStyles} />}
                 />
                 <NavLink
                   to="/profile"
@@ -105,8 +108,8 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                   icon={<UserCircleIcon className={iconStyles} />}
                 />
                 <NavLink
-                  to="/shopping-cart"
-                  label="Shopping Cart"
+                  to="/premium"
+                  label="Get Premium"
                   icon={<ShoppingCartIcon className={iconStyles} />}
                 />
               </>
@@ -117,6 +120,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                 to="/signup"
                 label="Signout"
                 icon={<ArrowRightOnRectangleIcon className={iconStyles} />}
+                onClick={appSignout}
               />
             )}
 
