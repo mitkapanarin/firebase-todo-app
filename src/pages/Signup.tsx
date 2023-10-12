@@ -3,15 +3,12 @@ import InputField from "../components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useEmailSignupMutation } from "../store";
-
-interface IUserData {
-  email: string;
-  password: string;
-}
+import { useEmailSignupMutation, useGoogleSignupMutation } from "../store";
+import { IUserData } from "../types/interface";
 
 const Signup = () => {
   const [emailSignup] = useEmailSignupMutation();
+  const [googleSignup] = useGoogleSignupMutation();
 
   const initialState: IUserData = {
     email: "",
@@ -37,6 +34,17 @@ const Signup = () => {
       .catch((err) => toast.error(err));
   };
 
+  const GoogleAuth = async () =>
+    await toast
+      .promise(googleSignup(null).unwrap(), {
+        pending: "Creating user...",
+        success: "Successfully created user!",
+        error: "Could not create user!",
+      })
+      .then((res) => console.log(res))
+      .then(() => navigate("/profile"))
+      .catch((err) => toast.error(err));
+
   return (
     <section className="">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -45,6 +53,9 @@ const Signup = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign Up for a new account
             </h1>
+            <button onClick={GoogleAuth} className="border p-2">
+              Google signup
+            </button>
             <div className="flex justify-between gap-3"></div>
             <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
               <InputField

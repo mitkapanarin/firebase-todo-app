@@ -3,10 +3,16 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface IUserData {
   userUid: string;
+  name: string;
+  email: string;
+  profileImage: string;
 }
 
 const initialState: IUserData = {
   userUid: "",
+  name: "",
+  email: "",
+  profileImage: "",
 };
 
 export const userSlice = createSlice({

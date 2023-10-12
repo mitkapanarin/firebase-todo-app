@@ -3,7 +3,14 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { systemSlice } from "./Slices/systemSlice";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { UserAuthAPI, useEmailSignupMutation } from "./API/userAuthAPI";
+import {
+  UserAuthAPI,
+  useEmailSignupMutation,
+  useEmailLoginMutation,
+  useGoogleSignupMutation,
+  useSendResetPassWordEmailMutation,
+  useSetNewPassWordMutation,
+} from "./API/userAuthAPI";
 import { userSlice, loginFn, logoutFn } from "./Slices/userSlice";
 
 const persistConfig = {
@@ -37,4 +44,12 @@ export type AppDispatch = typeof store.dispatch;
 
 setupListeners(store.dispatch);
 
-export { useEmailSignupMutation, logoutFn, loginFn };
+export {
+  useEmailSignupMutation,
+  logoutFn,
+  loginFn,
+  useEmailLoginMutation,
+  useGoogleSignupMutation,
+  useSendResetPassWordEmailMutation,
+  useSetNewPassWordMutation,
+};

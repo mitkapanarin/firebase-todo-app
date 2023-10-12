@@ -1,7 +1,7 @@
-## plan
+# plan
 
-* forgot, reset password
-* email verification
-* work with CRUD on the firebase firestore
-* upload images via firebase storage
-* payment processing
+* forgot, reset password [mitka]
+* email verification [mitka]
+* work with CRUD on the firebase firestore [joy]
+* upload images via firebase storage [joy]
+* payment processing [joy]

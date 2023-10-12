@@ -1,23 +1,22 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { auth } from "../../config/firebase-config";
+import { auth, googleProvider } from "../../config/firebase-config";
 import {
   createUserWithEmailAndPassword,
   UserCredential,
   signInWithEmailAndPassword,
+  signInWithPopup,
+  sendPasswordResetEmail,
+  confirmPasswordReset,
 } from "firebase/auth";
-
-export interface IUserSignInData {
-  email: string;
-  password: string;
-}
+import { IUserData } from "../../types/interface";
 
 export const UserAuthAPI = createApi({
   reducerPath: "UserAuthAPI",
   baseQuery: fakeBaseQuery(),
   tagTypes: ["User", "UpdateUser"],
   endpoints: (builder) => ({
-    emailSignup: builder.mutation<UserCredential, IUserSignInData>({
-      queryFn: async (user: IUserSignInData) => {
+    emailSignup: builder.mutation<UserCredential, IUserData>({
+      queryFn: async (user: IUserData) => {
         try {
           const { email, password } = user;
           const response: UserCredential = await createUserWithEmailAndPassword(
@@ -36,8 +35,8 @@ export const UserAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
-    emailLogin: builder.mutation<UserCredential, IUserSignInData>({
-      queryFn: async (user: IUserSignInData) => {
+    emailLogin: builder.mutation<UserCredential, IUserData>({
+      queryFn: async (user: IUserData) => {
         try {
           const { email, password } = user;
           const response: UserCredential = await signInWithEmailAndPassword(
@@ -56,7 +55,73 @@ export const UserAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
+    googleSignup: builder.mutation<UserCredential, null>({
+      queryFn: async () => {
+        try {
+          const response = await signInWithPopup(auth, googleProvider);
+          return {
+            data: response,
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      invalidatesTags: ["User"],
+    }),
+    sendResetPassWordEmail: builder.mutation<
+      string,
+      {
+        email: string;
+      }
+    >({
+      queryFn: async ({ email }) => {
+        try {
+          await sendPasswordResetEmail(auth, email, {
+            url: "http://localhost:5173/login",
+          });
+          return {
+            data: "Password reset link sent to your email",
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      invalidatesTags: ["User"],
+    }),
+    setNewPassWord: builder.mutation<
+      string,
+      {
+        oobCode: string;
+        password: string;
+      }
+    >({
+      queryFn: async ({ oobCode, password }) => {
+        await confirmPasswordReset(auth, oobCode, password);
+        try {
+          return {
+            data: "Successfully reset Password",
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      invalidatesTags: ["User"],
+    }),
+
+    // make another endpoint for updating user data
   }),
 });
 
-export const { useEmailSignupMutation, useEmailLoginMutation } = UserAuthAPI;
+export const {
+  useEmailSignupMutation,
+  useEmailLoginMutation,
+  useGoogleSignupMutation,
+  useSendResetPassWordEmailMutation,
+  useSetNewPassWordMutation,
+} = UserAuthAPI;
