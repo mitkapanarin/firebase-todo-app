@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { FaFacebook, FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
+import { gradientTextStyles } from "../components/Text/TextStyles";
 
 const ProfilePage = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -13,35 +14,18 @@ const ProfilePage = () => {
           <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
             <div className="mx-auto max-w-242.5">
               <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <h2 className="text-title-md2 font-bold">Profile</h2>
+                <h2
+                  className={`${gradientTextStyles} font-bold text-center text-2xl mb-3`}
+                >
+                  Profile
+                </h2>
               </div>
               <div className="overflow-hidden rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="relative z-20 h-35 md:h-65">
-                  <img
-                    src="./images/cover/cover-01.png"
-                    alt="profile cover"
-                    className="h-full w-full rounded-tl-sm rounded-tr-sm object-cover object-center"
-                  />
-                  <div className="absolute bottom-1 right-1 z-10 xsm:bottom-4 xsm:right-4">
-                    <label
-                      htmlFor="cover"
-                      className="flex cursor-pointer items-center justify-center gap-2 rounded bg-primary py-1 px-2 text-sm font-medium hover:bg-opacity-80 xsm:px-4"
-                    >
-                      <input
-                        type="file"
-                        name="cover"
-                        id="cover"
-                        className="sr-only"
-                      />
-                      <span>Edit</span>
-                    </label>
-                  </div>
-                </div>
                 <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
                   <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
-                    <div className="relative drop-shadow-2">
+                    <div className="relative drop-shadow-2 flex justify-center">
                       <img
-                        className="w-[100px] h-[100px]"
+                        className="w-[150px] h-[150px]"
                         src={user?.profileImage}
                         alt=""
                       />

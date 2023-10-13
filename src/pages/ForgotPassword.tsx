@@ -6,7 +6,7 @@ import { IUserData } from "../types/interface";
 
 const ForgotPassword = () => {
   const initialState: Pick<IUserData, "email"> = {
-    email: "khondokoralam@gmail.com",
+    email: "",
   };
 
   const [data, setData] = useState(initialState);

@@ -13,11 +13,10 @@ import {
   PricingPage,
 } from "./pages";
 import Sidebar from "./components/Sidebar/Sidebar";
-
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebase-config";
 import { loginFn, logoutFn } from "./store";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { AuthenticationRoute, ProtectedRoutes } from "./pages/utils";
 
@@ -32,11 +31,11 @@ const App = () => {
         const name = user.displayName as string;
         const email = user.email as string;
         // @ts-ignore
-        // Cookies.set("accessToken", user?.accessToken);
+        Cookies.set("accessToken", user?.accessToken);
 
         dispatch(loginFn({ userUid: uid, profileImage, name, email }));
       } else {
-        // Cookies.remove("accessToken");
+        Cookies.remove("accessToken");
         dispatch(logoutFn());
       }
     });

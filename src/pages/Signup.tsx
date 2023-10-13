@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import InputField from "../components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { useEmailSignupMutation, useGoogleSignupMutation } from "../store";
+import { useNavigate } from "react-router-dom";
 import { IUserData } from "../types/interface";
 
 const Signup = () => {
-  const [emailSignup] = useEmailSignupMutation();
-  const [googleSignup] = useGoogleSignupMutation();
-
   const initialState: IUserData = {
     email: "",
     password: "",
@@ -17,6 +14,9 @@ const Signup = () => {
 
   const navigate = useNavigate();
   const [data, setData] = useState(initialState);
+
+  const [emailSignup] = useEmailSignupMutation();
+  const [googleSignup] = useGoogleSignupMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -27,9 +27,10 @@ const Signup = () => {
     await toast
       .promise(emailSignup(data).unwrap(), {
         pending: "Creating user...",
-        success: "Successfully created user!",
-        error: "Could not create user!",
+        success: "User created successfully",
+        error: "Error creating user",
       })
+      .then(() => setData(initialState))
       .then(() => navigate("/profile"))
       .catch((err) => toast.error(err));
   };
@@ -56,7 +57,6 @@ const Signup = () => {
             <button onClick={GoogleAuth} className="border p-2">
               Google signup
             </button>
-            <div className="flex justify-between gap-3"></div>
             <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
               <InputField
                 label="Your Email"
@@ -82,16 +82,16 @@ const Signup = () => {
               >
                 Sign Up
               </button>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Login
+                </Link>
+              </p>
             </form>
-            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-              Already have an account?{" "}
-              <Link
-                to="/login"
-                className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-              >
-                Login
-              </Link>
-            </p>
           </div>
         </div>
       </div>
