@@ -8,6 +8,7 @@ import {
   sendPasswordResetEmail,
   confirmPasswordReset,
   signOut,
+  sendEmailVerification,
 } from "firebase/auth";
 import { IUserData } from "../../types/interface";
 
@@ -130,7 +131,30 @@ export const UserAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
-
+    sendEmailVerification: builder.mutation<string, object>({
+      queryFn: async () => {
+        try {
+          const user = auth.currentUser;
+          if (user) {
+            await sendEmailVerification(user, {
+              url: "http://localhost:5173/login",
+            });
+            return {
+              data: "Email verification link sent to your email",
+            };
+          } else {
+            return {
+              error: "No user found. Please log in.",
+            };
+          }
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      invalidatesTags: ["User"],
+    }),
     // make another endpoint for updating user data
   }),
 });
@@ -142,4 +166,5 @@ export const {
   useSendResetPassWordEmailMutation,
   useSetNewPassWordMutation,
   useLogoutMutation,
+  useSendEmailVerificationMutation,
 } = UserAuthAPI;
