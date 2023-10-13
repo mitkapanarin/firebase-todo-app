@@ -9,8 +9,9 @@ import {
   confirmPasswordReset,
   signOut,
   sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
-import { IUserData } from "../../types/interface";
+import { IUserData, IUpdateUser } from "../../types/interface";
 
 export const UserAuthAPI = createApi({
   reducerPath: "UserAuthAPI",
@@ -156,6 +157,40 @@ export const UserAuthAPI = createApi({
       invalidatesTags: ["User"],
     }),
     // make another endpoint for updating user data
+
+    updateUserProfile: builder.mutation<
+      IUpdateUser,
+      Pick<IUpdateUser, "name" | "photoURL">
+    >({
+      queryFn: async ({ name, photoURL }) => {
+        try {
+          const user = auth.currentUser;
+          if (user) {
+            await updateProfile(user, {
+              displayName: name,
+              photoURL,
+            });
+            return {
+              data: {
+                name,
+                photoURL,
+                email: user.email,
+                uid: user.uid,
+              } as IUpdateUser,
+            };
+          } else {
+            return {
+              error: "No user found. Please log in.",
+            };
+          }
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -167,4 +202,5 @@ export const {
   useSetNewPassWordMutation,
   useLogoutMutation,
   useSendEmailVerificationMutation,
+  useUpdateUserProfileMutation,
 } = UserAuthAPI;

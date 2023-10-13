@@ -12,6 +12,7 @@ import {
   useSetNewPassWordMutation,
   useLogoutMutation,
   useSendEmailVerificationMutation,
+  useUpdateUserProfileMutation,
 } from "./API/userAuthAPI";
 import { userSlice, loginFn, logoutFn } from "./Slices/userSlice";
 
@@ -56,4 +57,5 @@ export {
   useSetNewPassWordMutation,
   useLogoutMutation,
   useSendEmailVerificationMutation,
+  useUpdateUserProfileMutation,
 };

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { FaFacebook, FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
 import { gradientTextStyles } from "../components/Text/TextStyles";
+import Modal from "../components/Modal/Modal";
 
 const ProfilePage = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -19,6 +19,7 @@ const ProfilePage = () => {
                 >
                   Profile
                 </h2>
+                <Modal />
               </div>
               <div className="overflow-hidden rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
@@ -26,7 +27,7 @@ const ProfilePage = () => {
                     <div className="relative drop-shadow-2 flex justify-center">
                       <img
                         className="w-[150px] h-[150px]"
-                        src={user?.profileImage}
+                        src={user?.photoURL}
                         alt=""
                       />
                       <label
@@ -81,7 +82,7 @@ const ProfilePage = () => {
                           data-name="social-icon"
                           aria-label="social-icon"
                         >
-                          <FaFacebook />
+                          <i className="bi bi-facebook"></i>
                         </a>
                         <a
                           href="#"
@@ -89,7 +90,7 @@ const ProfilePage = () => {
                           data-name="social-icon"
                           aria-label="social-icon"
                         >
-                          <FaTwitter />
+                          <i className="bi bi-twitter"></i>
                         </a>
                         <a
                           href="#"
@@ -97,7 +98,7 @@ const ProfilePage = () => {
                           data-name="social-icon"
                           aria-label="social-icon"
                         >
-                          <FaLinkedin />
+                          <i className="bi bi-linkedin"></i>
                         </a>
                         <a
                           href="#"
@@ -105,7 +106,7 @@ const ProfilePage = () => {
                           data-name="social-icon"
                           aria-label="social-icon"
                         >
-                          <FaGithub />
+                          <i className="bi bi-github"></i>
                         </a>
                       </div>
                     </div>
