@@ -50,7 +50,7 @@ const ProfilePage = () => {
                     <div className="dark:bg-[#37404F] mx-auto mt-7 mb-7 grid max-w-50 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark">
                       <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                         <span className="font-semibold">20</span>
-                        <span className="text-sm">ToDo</span>
+                        <span className="text-sm">Tasks</span>
                       </div>
                       <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                         <span className="font-semibold">12</span>
@@ -72,7 +72,7 @@ const ProfilePage = () => {
                       </p>
                     </div>
 
-                    <div className="mt-6.5">
+                    <div className="mt-10">
                       <h4 className="mb-3.5 font-medium">Follow me on</h4>
                       <div className="flex items-center justify-center gap-3.5">
                         <a
