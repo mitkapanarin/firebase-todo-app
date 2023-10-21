@@ -27,13 +27,13 @@ const App = () => {
       console.log(user);
       if (user) {
         const uid = user.uid;
-        const profileImage = user.photoURL as string;
+        const photoURL = user.photoURL as string;
         const name = user.displayName as string;
         const email = user.email as string;
         // @ts-ignore
         Cookies.set("accessToken", user?.accessToken);
 
-        dispatch(loginFn({ userUid: uid, profileImage, name, email }));
+        dispatch(loginFn({ uid, photoURL, name, email }));
       } else {
         Cookies.remove("accessToken");
         dispatch(logoutFn());
