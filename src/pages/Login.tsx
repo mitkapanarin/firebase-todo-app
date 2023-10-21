@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import InputField from "../components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { IUserSignInData } from "../store/API/userAuthAPI";
 import { useNavigate } from "react-router-dom";
 import { useEmailLoginMutation } from "../store/API/userAuthAPI";
+import { IUserData } from "../types/interface";
 
 const Login = () => {
   const [emailLogin] = useEmailLoginMutation();
   const navigate = useNavigate();
-  const initialState: IUserSignInData = {
+  const initialState: IUserData = {
     email: "",
     password: "",
   };
