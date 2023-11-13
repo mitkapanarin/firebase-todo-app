@@ -1,17 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import { systemSlice } from "./Slices/systemSlice";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { sysmtemSlice, resetSystem, themeSwitch } from "./Slices/systemSlice";
+import { userDataSlice, loginSuccess, logoutSuccess } from "./Slices/userSlice";
+import { taskAPI } from "./API/taskAPI";
 import {
-  UserAuthAPI,
+  userAuthAPI,
   useEmailSignupMutation,
   useEmailLoginMutation,
   useGoogleSignupMutation,
+  useLogoutMutation,
   useSendResetPassWordEmailMutation,
   useSetNewPassWordMutation,
+  useUpdateUserProfileMutation,
 } from "./API/userAuthAPI";
-import { userSlice, loginFn, logoutFn } from "./Slices/userSlice";
+
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
   key: "root",
@@ -20,36 +24,48 @@ const persistConfig = {
 
 const persistedSystemReducer = persistReducer(
   persistConfig,
-  systemSlice.reducer
+  sysmtemSlice.reducer
 );
 
-const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
+const persistedUserReducer = persistReducer(
+  persistConfig,
+  userDataSlice.reducer
+);
 
 export const store = configureStore({
   reducer: {
     system: persistedSystemReducer,
     user: persistedUserReducer,
-    [UserAuthAPI.reducerPath]: UserAuthAPI.reducer,
+    [userAuthAPI.reducerPath]: userAuthAPI.reducer,
+    [taskAPI.reducerPath]: taskAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(UserAuthAPI.middleware),
+    }).concat(userAuthAPI.middleware, taskAPI.middleware),
 });
 
 export const persistedStore = persistStore(store);
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-
 setupListeners(store.dispatch);
 
+export type RootState = ReturnType<typeof store.getState>;
+
 export {
+  // system settings
+  resetSystem,
+  themeSwitch,
+
+  // user auth
   useEmailSignupMutation,
-  logoutFn,
-  loginFn,
   useEmailLoginMutation,
   useGoogleSignupMutation,
+  useLogoutMutation,
   useSendResetPassWordEmailMutation,
   useSetNewPassWordMutation,
+  useUpdateUserProfileMutation,
+
+  // user auth slice
+  loginSuccess,
+  logoutSuccess,
 };

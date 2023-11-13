@@ -1,32 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface IUserData {
-  userUid: string;
+interface UserState {
+  uid: string;
   name: string;
   email: string;
-  profileImage: string;
+  photoURL: string;
 }
 
-const initialState: IUserData = {
-  userUid: "",
+export const initialState: UserState = {
+  uid: "",
   name: "",
   email: "",
-  profileImage: "",
+  photoURL: "",
 };
 
-export const userSlice = createSlice({
-  name: "user",
+export const userDataSlice = createSlice({
+  name: "userData",
   initialState,
   reducers: {
-    loginFn: (state: IUserData, action: PayloadAction<IUserData>) => {
+    loginSuccess: (state, action: PayloadAction<UserState>) => {
       return {
         ...state,
         ...action.payload,
       };
     },
-    logoutFn: () => initialState,
+    logoutSuccess: () => initialState,
   },
 });
 
-export const { loginFn, logoutFn } = userSlice.actions;
+export const { loginSuccess, logoutSuccess } = userDataSlice.actions;

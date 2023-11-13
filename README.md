@@ -1,8 +1,6 @@
-# react-firebase-todo-app
-# Project Description
+# Objective
 
-This project is aimed at enhancing my skills and knowledge by building a comprehensive application using React and Firebase. 
-
+Creating a tutorial for everyone on how to use react with firebase by building a todo app
 
 ## Topics covered in the tutorial
 
@@ -12,14 +10,17 @@ This project is aimed at enhancing my skills and knowledge by building a compreh
 * firebase storage
 * firebase authentication, reset password, google login, email signup, email verification
 * tailwind css
+*
 
 ## Todo
 
-* [x] add code quality tools -> prettier, eslint, lint staged, lint, husky
-* [x] add code coverage tools
+* [] add code quality tools -> prettier, eslint, lint staged, lint, husky
+* [] add code coverage tools
+* [] add CI/CD tools
+* [] add code documentation tools
 * [x] add redux
 * [x] add firebase
 * [x] add navbar
-* [x] add Input Field
+* [] add Input Field
 * [x] add tailwind css
-* [x] login, signup, reset pass, forgot pass, email verification page designs
+* [] login, signup, reset pass, forgot pass, email verification page designs
