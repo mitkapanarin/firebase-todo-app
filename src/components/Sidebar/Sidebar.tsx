@@ -27,7 +27,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const mode: string = useSelector((x: RootState) => x.system.mode);
-  const userUid: string = useSelector((x: RootState) => x.user.userUid);
+  const userUid: string = useSelector((x: RootState) => x.user.uid);
   const iconStyles =
     "w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white";
 

@@ -3,11 +3,10 @@ import {
   useDeleteOneTaskMutation,
   useCreateOneTaskMutation,
 } from "../store/API/taskAPI";
-import Task from "../Components/Tasks/Task";
+import Task from "../components/Tasks/Task";
 import { toast } from "react-toastify";
-import TaskModal from "../Components/Modal/TaskModal";
+import TaskModal from "../components/Modal/TaskModal";
 import React from "react";
-import { ITaskProps } from "../types/interface";
 import TaskForm from "../components/Form/TaskForm";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";

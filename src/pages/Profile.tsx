@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { loginSuccess, useUpdateUserProfileMutation } from "../store";
-import { useDispatch } from "react-redux";
+import { RootState, loginSuccess, useLogoutMutation, useUpdateUserProfileMutation } from "../store";
+import { useDispatch, useSelector } from "react-redux";
 import { IUpdateUser } from "../types/interface";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const initialState: Pick<IUpdateUser, "name" | "photoURL"> = {
@@ -13,6 +14,19 @@ const Profile = () => {
   const [data, setData] = useState(initialState);
   const dispatch = useDispatch();
   const [updateUserProfile] = useUpdateUserProfileMutation();
+  const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.user);
+  const [logout] = useLogoutMutation();
+
+  const appSignout = async () =>
+    await toast
+      .promise(logout(null).unwrap, {
+        pending: "Logging out...",
+        success: "Logout successful",
+        error: "Logout failed",
+      })
+      // .then(() => setIsMenuOpen(false))
+      .then(() => navigate("/login"));
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,35 +41,57 @@ const Profile = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="mt-6 mb-6">
-        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-        <input
-          type="email"
-          id="email"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="name@flowbite.com"
-          required
-        />
+    <div className="">
+      <h3>Welcome {user?.name}</h3>
+      <p>email: @ {user?.email}</p>
+      <img
+        className="mb-3"
+        style={{
+          width: "120px",
+        }}
+        src={
+          user?.photoURL ? user?.photoURL : "/images/blank-profile-picture.svg"
+        }
+        alt=""
+      />
+      <div>
+        <form onSubmit={handleSubmit}>
+          <div className="mt-6 mb-6">
+            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+            <input
+              type="email"
+              id="email"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="name@flowbite.com"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+            <input
+              type="password"
+              id="password"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="**********"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover-bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Submit
+          </button>
+        </form>
       </div>
-      <div className="mb-6">
-        <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
-        <input
-          type="password"
-          id="password"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="**********"
-          required
-        />
-      </div>
-      <button
-        type="submit"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover-bg-blue-700 dark:focus:ring-blue-800"
-      >
-        Submit
-      </button>
-    </form>
+      <br />
+      <button onClick={appSignout}>click to logout</button>
+    </div>
   );
 };
 
+
 export default Profile;
+
+
+
