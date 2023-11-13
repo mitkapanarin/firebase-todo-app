@@ -5,7 +5,7 @@ import { BsPencil, BsTrash, BsClock } from "react-icons/bs";
 import DeleteModal from "../Modal/DeleteModal";
 import dayjs from "dayjs";
 import TaskModal from "../Modal/TaskModal";
-import TaskForm from "../Forms/TaskForm";
+import TaskForm from "../Form/TaskForm";
 import { toast } from "react-toastify";
 import { useEditOneTaskMutation } from "../../store/API/taskAPI";
 

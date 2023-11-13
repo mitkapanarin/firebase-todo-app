@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import TaskModal from "../Components/Modal/TaskModal";
 import React from "react";
 import { ITaskProps } from "../types/interface";
-import TaskForm from "../Components/Forms/TaskForm";
+import TaskForm from "../components/Form/TaskForm";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { NewTaskType } from "../types/types";
