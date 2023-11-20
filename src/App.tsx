@@ -10,7 +10,7 @@ import {
   Tasks,
   Profile,
 } from "./pages";
-import Navbar from "./Components/Navbar";
+import Navbar from "./components/Navbar";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Config/firebase-config";
 // import Cookies from "js-cookie";

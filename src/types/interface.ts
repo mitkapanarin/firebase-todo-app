@@ -1,4 +1,5 @@
 export interface IUserSignInData {
+  name: string;
   email: string;
   password: string;
 }
