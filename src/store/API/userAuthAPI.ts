@@ -135,14 +135,19 @@ export const userAuthAPI = createApi({
     // update user profile
     updateUserProfile: builder.mutation<
       IUpdateUser,
-      Pick<IUpdateUser, "name" | "photoURL">
+      Pick<IUpdateUser, "name" | "photoURL" | "phoneNumber">
     >({
-      queryFn: async ({ name, photoURL }) => {
+      queryFn: async ({ name, photoURL, phoneNumber }) => {
+        console.log("data requests ", name, photoURL, phoneNumber);
         try {
           const user = auth.currentUser;
           if (user) {
             // Update the user's profile with the provided name and photoURL
-            await updateProfile(user, { displayName: name, photoURL });
+            await updateProfile(user, {
+              displayName: name,
+              photoURL,
+              phoneNumber,
+            });
           }
           return {
             data: {
@@ -150,6 +155,7 @@ export const userAuthAPI = createApi({
               photoURL,
               email: user?.email,
               uid: user?.uid,
+              phoneNumber,
             } as IUpdateUser,
           };
         } catch (err) {

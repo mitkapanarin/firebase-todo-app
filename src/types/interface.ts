@@ -7,6 +7,7 @@ export interface IUserSignInData {
 export interface IUpdateUser {
   name: string;
   photoURL: string;
+  phoneNumber: string;
   email: string;
   uid: string;
 }

@@ -16,10 +16,11 @@ const Profile = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   const [logout] = useLogoutMutation();
-  const initialState: Pick<IUpdateUser, "name" | "photoURL"> = {
+  const initialState: Pick<IUpdateUser, "name" | "photoURL" | "phoneNumber"> = {
     name: "Random Name",
     photoURL:
       "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/piw9n7scle0b3so65dzq.png",
+    phoneNumber: "78234ghdsfgh",
   };
   const [data, setData] = useState(initialState);
   const dispatch = useDispatch();
