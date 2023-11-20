@@ -31,7 +31,7 @@ export const taskAPI = createApi({
       queryFn: async ({ userID }) => {
         const requestQuery = query(
           collection(db, tasksCollectionName),
-          where("userOwner", "==", userID),
+          where("userOwner", "==", userID)
         );
 
         const getAlltasks = await getDocs(requestQuery);

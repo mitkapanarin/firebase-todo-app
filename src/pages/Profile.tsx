@@ -1,5 +1,10 @@
 import { toast } from "react-toastify";
-import { RootState, loginSuccess, useLogoutMutation, useUpdateUserProfileMutation } from "../store";
+import {
+  RootState,
+  loginSuccess,
+  useLogoutMutation,
+  useUpdateUserProfileMutation,
+} from "../store";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IUpdateUser } from "../types/interface";
@@ -21,6 +26,7 @@ const Profile = () => {
   const [updateUserProfile] = useUpdateUserProfileMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("form clicked");
     e.preventDefault();
     await toast
       .promise(updateUserProfile(data).unwrap(), {
@@ -32,6 +38,8 @@ const Profile = () => {
       .catch((err) => toast.error(err));
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setData({ ...data, [e.target.name]: e.target.value });
 
   const appSignout = async () =>
     await toast
@@ -58,17 +66,19 @@ const Profile = () => {
         alt=""
       />
       <EditProfileModal
-        button={<div className="flex justify-center">
-          <button className="btn btn-primary bg-blue-700 p-2 rounded-full mt-5 mx-auto">Edit Profile</button>
-        </div>}
+        button={
+          <div className="flex justify-center">
+            <button className="btn btn-primary bg-blue-700 p-2 rounded-full mt-5 mx-auto">
+              Edit Profile
+            </button>
+          </div>
+        }
         title="Edit Profile"
-        onConfirm={() => handleSubmit}
+        onConfirm={handleSubmit}
         onCancel={() => console.log("cancel")}
         onClose={() => console.log("close")}
       >
-        <EditProfileForm button={handleSubmit} onClose={function (): void {
-                  throw new Error("Function not implemented.");
-              } } />
+        <EditProfileForm {...data} handleInputChange={handleInputChange} />
       </EditProfileModal>
       <br />
       <button onClick={appSignout}>click to logout</button>

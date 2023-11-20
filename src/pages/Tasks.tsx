@@ -62,7 +62,9 @@ const Tasks = () => {
       <TaskModal
         button={
           <div className="flex justify-center">
-            <button className="btn btn-primary bg-blue-700 p-2 rounded-full mt-5 mx-auto">Create Task</button>
+            <button className="btn btn-primary bg-blue-700 p-2 rounded-full mt-5 mx-auto">
+              Create Task
+            </button>
           </div>
         }
         title="Create Task"
@@ -72,8 +74,6 @@ const Tasks = () => {
       >
         <TaskForm {...newTask} handleInput={handleInput} />
       </TaskModal>
-
-
 
       {data?.map((task) => {
         return <Task key={task.id} {...task} deleteTask={deleteTask} />;

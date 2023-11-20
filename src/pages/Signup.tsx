@@ -59,7 +59,7 @@ const Signup = () => {
               Google signup
             </button>
             <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
-            <InputField
+              <InputField
                 label="Your Name"
                 onChange={handleChange}
                 name="name"
