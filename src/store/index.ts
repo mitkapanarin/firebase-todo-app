@@ -13,6 +13,7 @@ import {
   useSetNewPassWordMutation,
   useUpdateUserProfileMutation,
 } from "./API/userAuthAPI";
+import { storageAPI } from "./API/storageAPI";
 
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -38,11 +39,16 @@ export const store = configureStore({
     user: persistedUserReducer,
     [userAuthAPI.reducerPath]: userAuthAPI.reducer,
     [taskAPI.reducerPath]: taskAPI.reducer,
+    [storageAPI.reducerPath]: storageAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(userAuthAPI.middleware, taskAPI.middleware),
+    }).concat(
+      userAuthAPI.middleware,
+      taskAPI.middleware,
+      storageAPI.middleware
+    ),
 });
 
 export const persistedStore = persistStore(store);

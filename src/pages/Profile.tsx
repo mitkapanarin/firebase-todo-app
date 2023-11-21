@@ -11,8 +11,11 @@ import { IUpdateUser } from "../types/interface";
 import { useState } from "react";
 import EditProfileForm from "../components/Form/EditProfileForm";
 import EditProfileModal from "../components/Modal/EditProfileModal";
+import { useUploadImageMutation } from "../store/API/storageAPI";
 
 const Profile = () => {
+  const [uploadImage] = useUploadImageMutation();
+
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   const [logout] = useLogoutMutation();
@@ -52,6 +55,20 @@ const Profile = () => {
       // .then(() => setIsMenuOpen(false))
       .then(() => navigate("/login"));
 
+  const [file, setFile] = useState({});
+
+  const uploadImages = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (file) {
+      console.log("Uploading file:", file);
+      await toast.promise(uploadImage(file).unwrap(), {
+        pending: "Uploading image...",
+        success: "Image uploaded",
+        error: "Image upload failed",
+      });
+    }
+  };
+
   return (
     <div className="">
       <h3>Welcome {user?.name}</h3>
@@ -83,6 +100,19 @@ const Profile = () => {
       </EditProfileModal>
       <br />
       <button onClick={appSignout}>click to logout</button>
+
+      <form onSubmit={uploadImages}>
+        {file?.name}
+        <input
+          type="file"
+          name=""
+          id=""
+          value=""
+          onChange={(e) => setFile(e.target.files![0])}
+        />
+
+        <button type="submit">Upload image</button>
+      </form>
     </div>
   );
 };
