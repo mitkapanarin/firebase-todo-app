@@ -65,7 +65,9 @@ const DeleteModal = ({
                 clipRule="evenodd"
               ></path>
             </svg>
-            <p className="mb-4 text-gray-500 dark:text-gray-300">{description}</p>
+            <p className="mb-4 text-gray-500 dark:text-gray-300">
+              {description}
+            </p>
             <div className="flex justify-center space-x-4">
               <button
                 type="button"

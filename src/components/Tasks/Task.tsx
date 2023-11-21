@@ -45,11 +45,15 @@ const Task: FC<ITaskComponentProps> = ({
       error: "Error updating task",
     });
   };
-  const initialStatus = localStorage.getItem(`status_${id}`) || StatusEnum.INCOMPLETE;
+  const initialStatus =
+    localStorage.getItem(`status_${id}`) || StatusEnum.INCOMPLETE;
   const [selectedStatus, setSelectedStatus] = useState(initialStatus);
 
   const toggleStatus = () => {
-    const newStatus = selectedStatus === StatusEnum.INCOMPLETE ? StatusEnum.COMPLETE : StatusEnum.INCOMPLETE;
+    const newStatus =
+      selectedStatus === StatusEnum.INCOMPLETE
+        ? StatusEnum.COMPLETE
+        : StatusEnum.INCOMPLETE;
     setSelectedStatus(newStatus);
     localStorage.setItem(`status_${id}`, newStatus);
   };
@@ -62,11 +66,12 @@ const Task: FC<ITaskComponentProps> = ({
     }
   }, [id]);
 
-
   return (
     <div className="block mt-3 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
       <div className="flex items-center mb-2">
-        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{title}</h5>
+        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          {title}
+        </h5>
         <span className="ml-2 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
           {label}
         </span>
@@ -77,21 +82,26 @@ const Task: FC<ITaskComponentProps> = ({
           ? dayjs(deadline).format("dddd, MMMM D, YYYY")
           : "No Deadline"}
       </div>
-      <p className="font-normal text-gray-700 dark:text-gray-400 mb-2">{description}</p>
+      <p className="font-normal text-gray-700 dark:text-gray-400 mb-2">
+        {description}
+      </p>
       <div className="flex gap-2">
         <button
-          className={`${selectedStatus === StatusEnum.INCOMPLETE
-              ? 'bg-yellow-400'
-              : 'bg-green-500'
-            } text-white px-4 py-1 rounded-full`}
+          className={`${
+            selectedStatus === StatusEnum.INCOMPLETE
+              ? "bg-yellow-400"
+              : "bg-green-500"
+          } text-white px-4 py-1 rounded-full`}
           onClick={toggleStatus}
         >
-          {selectedStatus === StatusEnum.INCOMPLETE ? 'Incomplete' : 'Completed'}
+          {selectedStatus === StatusEnum.INCOMPLETE
+            ? "Incomplete"
+            : "Completed"}
         </button>
         <TaskModal
           button={
             <span className="bg-blue-800 text-white px-4 py-1 rounded-full">
-              <BsPencil className="inline-block text-xs"/>
+              <BsPencil className="inline-block text-xs" />
             </span>
           }
           title="Edit Task"
