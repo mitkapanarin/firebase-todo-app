@@ -10,6 +10,7 @@ const Login = () => {
   const initialState: IUserSignInData = {
     email: "khondokoralam@gmail.com",
     password: "1234567",
+    name: ""
   };
 
   const navigate = useNavigate();
