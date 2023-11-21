@@ -15,15 +15,15 @@ const Profile = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   const [logout] = useLogoutMutation();
-  const initialState: Pick<IUpdateUser, "name" | "photoURL"> = {
+  const initialState: Pick<IUpdateUser, "name" | "photoURL" | "phoneNumber"> = {
     name: "Random Name",
     photoURL:
       "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/piw9n7scle0b3so65dzq.png",
+    phoneNumber: "78234ghdsfgh",
   };
   const [data, setData] = useState(initialState);
   const dispatch = useDispatch();
   const [updateUserProfile] = useUpdateUserProfileMutation();
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log("form clicked");
     e.preventDefault();
@@ -36,10 +36,8 @@ const Profile = () => {
       .then((res: IUpdateUser) => dispatch(loginSuccess(res)))
       .catch((err) => toast.error(err));
   };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setData({ ...data, [e.target.name]: e.target.value });
-
   const appSignout = async () =>
     await toast
       .promise(logout(null).unwrap, {
@@ -53,6 +51,7 @@ const Profile = () => {
     <div className="">
       <h3>Welcome {user?.name}</h3>
       <p>email: @ {user?.email}</p>
+      <p>phone Number: {user?.phoneNumber}</p>
       <img
         className="mb-3"
         style={{
