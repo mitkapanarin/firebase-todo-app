@@ -28,6 +28,7 @@ const Profile = () => {
   const [data, setData] = useState(initialState);
   const dispatch = useDispatch();
   const [updateUserProfile] = useUpdateUserProfileMutation();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log("form clicked");
     e.preventDefault();
@@ -41,6 +42,8 @@ const Profile = () => {
       .catch((err) => toast.error(err));
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setData({ ...data, [e.target.name]: e.target.value });
 
   const appSignout = async () =>
     await toast
@@ -70,7 +73,7 @@ const Profile = () => {
     <div className="">
       <h3>Welcome {user?.name}</h3>
       <p>email: @ {user?.email}</p>
-      <p>Phone Number: {user.phoneNumber}</p>
+      <p>phone number: {user?.phoneNumber}</p>
       <img
         className="mb-3"
         style={{
@@ -114,4 +117,5 @@ const Profile = () => {
     </div>
   );
 };
+
 export default Profile;
