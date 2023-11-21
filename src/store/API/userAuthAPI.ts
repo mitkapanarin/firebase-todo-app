@@ -11,7 +11,6 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { IUserSignInData, IUpdateUser } from "../../types/interface";
-
 export const userAuthAPI = createApi({
   reducerPath: "userAuthAPI",
   baseQuery: fakeBaseQuery(),
@@ -87,7 +86,6 @@ export const userAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
-
     sendResetPassWordEmail: builder.mutation<
       string,
       {
@@ -110,7 +108,6 @@ export const userAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
-
     setNewPassWord: builder.mutation<
       string,
       {
@@ -168,7 +165,6 @@ export const userAuthAPI = createApi({
     }),
   }),
 });
-
 export const {
   useEmailSignupMutation,
   useEmailLoginMutation,

@@ -11,12 +11,12 @@ export interface IUpdateUser {
   email: string;
   uid: string;
 }
-
 export interface UserState {
   uid: string;
   name: string;
   email: string;
   photoURL: string;
+  phoneNumber: string;
 }
 
 export interface ITaskProps {
