@@ -40,8 +40,8 @@ const Profile = () => {
       .then((res: IUpdateUser) => dispatch(loginSuccess(res)))
       .catch((err) => toast.error(err));
   };
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setData({ ...data, [e.target.name]: e.target.value });
+
+
   const appSignout = async () =>
     await toast
       .promise(logout(null).unwrap, {

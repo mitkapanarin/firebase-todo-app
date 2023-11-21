@@ -47,11 +47,16 @@ const EditProfileModal = ({
                 <button
                   type="submit"
                   onClick={(e) => {
+<<<<<<< HEAD
                     e.preventDefault(); // Prevent the default button click behavior
                     setShowModal(false);
                     // Trigger the form submission by simulating the form submit event
                     const fakeEvent = new Event('submit') as unknown as React.FormEvent<HTMLFormElement>;
                     onConfirm(fakeEvent);
+=======
+                    onConfirm(e);
+                    setShowModal(false);
+>>>>>>> c29005907279a332aa3f27bc3b5ccfdf4ceabd6c
                   }}
                   className="text-white bg-blue-700 hover-bg-blue-800 focus-ring-4 focus-outline-none focus-ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark-bg-blue-600 dark-hover-bg-blue-700 dark-focus-ring-blue-800"
                 >
