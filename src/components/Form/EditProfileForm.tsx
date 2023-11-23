@@ -1,3 +1,6 @@
+import InputField from "../Form/InputField";
+
+
 const EditProfileForm = ({
   name,
   photoURL,
@@ -11,57 +14,33 @@ const EditProfileForm = ({
 }) => {
   return (
     <>
-      <div className="mt-6 mb-6">
-        <label
-          htmlFor="name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          Your name
-        </label>
-        <input
-          type="text"
-          id="name"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Someone"
-          name="name"
-          value={name}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div className="mt-6 mb-6">
-        <label
-          htmlFor="name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          Your photo URL
-        </label>
-        <input
-          type="text"
-          id="photoURL"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Someone"
-          value={photoURL}
-          name="photoURL"
-          onChange={handleInputChange}
-        />
-      </div>
-      <div className="mt-6 mb-6">
-        <label
-          htmlFor="name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          phoneNumber
-        </label>
-        <input
-          type="text"
-          id="phoneNumber"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Someone"
-          value={phoneNumber}
-          name="phoneNumber"
-          onChange={handleInputChange}
-        />
-      </div>
+      <InputField
+        label="Your Name"
+        onChange={handleInputChange}
+        name="name"
+        placeholder="Your name"
+        required
+        type="text"
+        value={name}
+      />
+      <InputField
+        label="Your photo URL"
+        onChange={handleInputChange}
+        name="photoURL"
+        placeholder="Photo URL"
+        required
+        type="text"
+        value={photoURL}
+      />
+      <InputField
+        label="Your phone number"
+        onChange={handleInputChange}
+        name="phoneNumber"
+        placeholder="phone Number"
+        required
+        type="text"
+        value={phoneNumber}
+      />
     </>
   );
 };
