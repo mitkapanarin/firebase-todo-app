@@ -1,4 +1,5 @@
 import React from "react";
+import InputField from "./InputField";
 
 const TaskForm = ({
   title,
@@ -20,72 +21,42 @@ const TaskForm = ({
       className="w-80"
       onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => e.preventDefault()}
     >
-      <div className="mb-4">
-        <label htmlFor="title" className="block text-black w-full">
-          Title
-        </label>
-        <input
-          type="text"
-          id="title"
-          className="form-control bg-gray-400 text-black w-full"
-          onChange={handleInput}
-          name="title"
-          value={title}
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="deadline" className="block text-black w-full">
-          Deadline
-        </label>
-        <input
-          type="date"
-          id="deadline"
-          className="form-control bg-gray-400 text-black w-full"
-          onChange={handleInput}
-          name="deadline"
-          value={deadline}
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="description" className="block text-black w-full">
-          Description
-        </label>
-        <input
-          type="text"
-          id="description"
-          className="form-control bg-gray-400 text-black w-full"
-          onChange={handleInput}
-          name="description"
-          value={description}
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="status" className="block text-black w-full">
-          Status
-        </label>
-        <input
-          type="text"
-          id="status"
-          className="form-control bg-gray-400 text-black w-full"
-          onChange={handleInput}
-          name="status"
-          // value={status}
-          value="incomplete"
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="label" className="block text-black w-full">
-          Label
-        </label>
-        <input
-          type="text"
-          id="label"
-          className="form-control bg-gray-400 text-black w-full"
-          onChange={handleInput}
-          name="label"
-          value={label}
-        />
-      </div>
+      <InputField
+        label="Task Name"
+        onChange={handleInput}
+        name="text"
+        placeholder="Enter Task Name"
+        required
+        type="text"
+        value={title}
+      />
+      <InputField
+        label="Task deadline"
+        onChange={handleInput}
+        name="deadline"
+        placeholder="Enter Task deadline"
+        required
+        type="date"
+        value={deadline}
+      />
+      <InputField
+        label="Status"
+        onChange={handleInput}
+        name="status"
+        placeholder="Enter Task deadline"
+        required
+        type="text"
+        value="incomplete"
+      />
+      <InputField
+        label="Label"
+        onChange={handleInput}
+        name="label"
+        placeholder="Label"
+        required
+        type="text"
+        value={label}
+      />
     </form>
   );
 };
