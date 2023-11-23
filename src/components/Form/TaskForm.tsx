@@ -43,10 +43,10 @@ const TaskForm = ({
         label="Status"
         onChange={handleInput}
         name="status"
-        placeholder="Enter Task deadline"
+        placeholder="Enter Task status"
         required
         type="text"
-        value="incomplete"
+        value={status}
       />
       <InputField
         label="Label"
@@ -56,6 +56,15 @@ const TaskForm = ({
         required
         type="text"
         value={label}
+      />
+      <InputField
+        label="Task description"
+        onChange={handleInput}
+        name="description"
+        placeholder="Task description"
+        required
+        type="text"
+        value={description}
       />
     </form>
   );
