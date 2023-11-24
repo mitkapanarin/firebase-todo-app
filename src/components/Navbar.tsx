@@ -11,13 +11,11 @@ import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 import BasicSwitch from "./Switch/BasicSwitch";
 import { themeSwitch, ThemeTypesEnum } from "../store/Slices/systemSlice";
 
-
 const Navbar = ({ children }: { children: React.ReactNode }) => {
   const [logout] = useLogoutMutation();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const user = useSelector((state: RootState) => state.user);
   const mode: string = useSelector((x: RootState) => x.system.mode);
-
 
   const iconStyles =
     "w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white";
@@ -83,8 +81,9 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
                   top: "30px",
                   right: "0",
                 }}
-                className={`z-50 ${!isMenuOpen && "hidden"
-                  } my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}
+                className={`z-50 ${
+                  !isMenuOpen && "hidden"
+                } my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}
                 id="user-dropdown"
               >
                 <div className="px-4 py-3">

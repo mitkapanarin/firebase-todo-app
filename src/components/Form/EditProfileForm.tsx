@@ -1,6 +1,5 @@
 import InputField from "../Form/InputField";
 
-
 const EditProfileForm = ({
   name,
   photoURL,
@@ -41,7 +40,6 @@ const EditProfileForm = ({
         type="text"
         value={phoneNumber}
       />
-      
     </>
   );
 };
