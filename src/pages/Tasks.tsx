@@ -3,9 +3,8 @@ import {
   useDeleteOneTaskMutation,
   useCreateOneTaskMutation,
 } from "../store/API/taskAPI";
-import Task from "../components/Tasks/Task";
-import { toast } from "react-toastify";
 import TaskModal from "../components/Modal/TaskModal";
+import { toast } from "react-toastify";
 import React from "react";
 import TaskForm from "../components/Form/TaskForm";
 import { useSelector } from "react-redux";
@@ -20,8 +19,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-
+} from "@/components/ui/table";
+import ConfirmModal from "@/components/Modal/ConfirmModal";
 
 const Tasks = () => {
   const userID = useSelector((state: RootState) => state.user.uid);
@@ -64,14 +63,14 @@ const Tasks = () => {
   };
 
   if (isLoading || isFetching) {
-    return <div className="">Loading please wait....</div>;
+    return <div className="text-black">Loading please wait....</div>;
   }
   if (isError) {
     return <div className="">Error, please try again</div>;
   }
   return (
     <div className="row">
-      <TaskModal
+      {/* <TaskModal
         button={
           <div className="flex justify-center">
             <button className="btn btn-primary bg-blue-700 p-2 rounded-full mt-5 mx-auto">
@@ -85,38 +84,60 @@ const Tasks = () => {
         onConfirm={onSubmit}
       >
         <TaskForm {...newTask} handleInput={handleInput} />
-      </TaskModal>
+      </TaskModal> */}
+
+      <TaskModal
+        title="Create Task"
+        button={<button>jsdchjkbsd</button>}
+        onConfirm={onSubmit}
+      />
 
       {/* {data?.map((task) => {
         return <Task key={task.id} {...task} deleteTask={deleteTask} />;
       })} */}
       <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {data?.map((task) => (
-          <TableRow key={task.id}>
-            <TableCell className="font-medium">{task.title}</TableCell>
-            <TableCell>{task.title}</TableCell>
-            <TableCell>{task.title}</TableCell>
-            <TableCell className="text-right">{task.title}</TableCell>
+        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Status</TableHead>
+            <TableHead>Time</TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead className="text-right">Description</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {data?.map((task) => {
+            console.log(task);
+            return (
+              <TableRow
+                style={{
+                  backgroundColor: "black",
+                }}
+                key={task.id}
+              >
+                <TableCell className="font-medium ">{task.status}</TableCell>
+                <TableCell>{task.deadline}</TableCell>
+                <TableCell className="text-right">{task.title}</TableCell>
+                <TableCell className="text-right">{task.description}</TableCell>
+                <TableCell className="text-right flex gap-2 justify-end">
+                  <ConfirmModal deleteFn={() => deleteTask(task?.id)} />
+                  {/* <button onClick={() => deleteTask(task?.id)} className="btn">
+                    Delete
+                  </button> */}
+                  <button className="btn">Edit</button>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={3}>Total</TableCell>
+            <TableCell className="text-right">$2,500.00</TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
     </div>
   );
 };

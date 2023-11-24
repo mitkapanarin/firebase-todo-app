@@ -1,4 +1,3 @@
-import { FC } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,26 +10,21 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export interface ITaskModalprops {
-  button: JSX.Element;
-  title: string;
-  onConfirm: () => void;
-}
-
-const TaskModal: FC<ITaskModalprops> = ({ button, onConfirm, title }) => {
+const ConfirmModal = ({ deleteFn }: { deleteFn: () => void }) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger>{button}</AlertDialogTrigger>
+      <AlertDialogTrigger>Delete</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            <input type="text" required />
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction type="submit" onClick={onConfirm}>
+          <AlertDialogAction onClick={() => deleteFn()}>
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -39,4 +33,4 @@ const TaskModal: FC<ITaskModalprops> = ({ button, onConfirm, title }) => {
   );
 };
 
-export default TaskModal;
+export default ConfirmModal;
