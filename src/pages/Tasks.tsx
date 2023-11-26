@@ -6,7 +6,6 @@ import {
 import TaskModal from "../components/Modal/TaskModal";
 import { toast } from "react-toastify";
 import React from "react";
-import TaskForm from "../components/Form/TaskForm";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { NewTaskType } from "../types/types";
@@ -15,12 +14,13 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import ConfirmModal from "@/components/Modal/ConfirmModal";
+
+import { Button } from "@/components/ui/button";
+import TaskMenu from "@/components/Menu/TaskMenu";
 
 const Tasks = () => {
   const userID = useSelector((state: RootState) => state.user.uid);
@@ -69,74 +69,45 @@ const Tasks = () => {
     return <div className="">Error, please try again</div>;
   }
   return (
-    <div className="row">
-      {/* <TaskModal
-        button={
-          <div className="flex justify-center">
-            <button className="btn btn-primary bg-blue-700 p-2 rounded-full mt-5 mx-auto">
-              Create Task
-            </button>
-          </div>
-        }
-        title="Create Task"
-        onCancel={() => console.log("cancel")}
-        onClose={() => console.log("close")}
-        onConfirm={onSubmit}
-      >
-        <TaskForm {...newTask} handleInput={handleInput} />
-      </TaskModal> */}
-
+    <div className="my-6">
       <TaskModal
-        title="Create Task"
-        button={<button>jsdchjkbsd</button>}
-        onConfirm={onSubmit}
+        createTaskFn={onSubmit}
+        newTask={newTask}
+        handleInput={handleInput}
       />
-
-      {/* {data?.map((task) => {
-        return <Task key={task.id} {...task} deleteTask={deleteTask} />;
-      })} */}
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
+      <Table className="border mt-4">
+        <TableCaption>A list of your Todos.</TableCaption>
         <TableHeader>
           <TableRow>
+            <TableHead className="w-[100px]">Title</TableHead>
+            <TableHead className="w-[120px]">Deadline</TableHead>
             <TableHead className="w-[100px]">Status</TableHead>
-            <TableHead>Time</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead className="text-right">Description</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="text-left">description</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data?.map((task) => {
-            console.log(task);
             return (
-              <TableRow
-                style={{
-                  backgroundColor: "black",
-                }}
-                key={task.id}
-              >
-                <TableCell className="font-medium ">{task.status}</TableCell>
-                <TableCell>{task.deadline}</TableCell>
-                <TableCell className="text-right">{task.title}</TableCell>
-                <TableCell className="text-right">{task.description}</TableCell>
-                <TableCell className="text-right flex gap-2 justify-end">
-                  <ConfirmModal deleteFn={() => deleteTask(task?.id)} />
-                  {/* <button onClick={() => deleteTask(task?.id)} className="btn">
-                    Delete
-                  </button> */}
-                  <button className="btn">Edit</button>
+              <TableRow key={task?.id}>
+                <TableCell className="font-medium">{task?.title}</TableCell>
+                <TableCell>
+                  {/* {task?.deadline} */}
+                  deadline here
+                </TableCell>
+                <TableCell>{task?.status}</TableCell>
+                <TableCell className="flex  items-center gap-3">
+                  <Button variant="outline" size="sm">
+                    {task?.label ? task?.label : "No label"}
+                  </Button>
+                  {task?.description}
+                </TableCell>
+                <TableCell>
+                  <TaskMenu onDelete={() => deleteTask(task?.id)} />
                 </TableCell>
               </TableRow>
             );
           })}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
     </div>
   );

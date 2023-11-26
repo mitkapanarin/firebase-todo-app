@@ -10,10 +10,16 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-const ConfirmModal = ({ deleteFn }: { deleteFn: () => void }) => {
+const ConfirmModal = ({
+  icon,
+  deleteFn,
+}: {
+  icon: React.ReactNode;
+  deleteFn: (id: string) => Promise<void>;
+}) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger>Delete</AlertDialogTrigger>
+      <AlertDialogTrigger>{icon}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -24,9 +30,8 @@ const ConfirmModal = ({ deleteFn }: { deleteFn: () => void }) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => deleteFn()}>
-            Continue
-          </AlertDialogAction>
+          {/* @ts-ignore */}
+          <AlertDialogAction onClick={deleteFn}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
