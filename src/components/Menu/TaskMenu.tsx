@@ -14,12 +14,16 @@ import {
 import { LuMoreHorizontal } from "react-icons/lu";
 import ConfirmModal from "../Modal/ConfirmModal";
 import { FC } from "react";
+import EditTaskSheet from "../Sheet/EditTaskSheet";
+import { ITaskProps } from "@/types/interface";
 
 interface ITaskMenuProps {
   onDelete: (id: string) => Promise<void>;
+  taskData: ITaskProps;
+  onEdit: (data: ITaskProps) => Promise<void>;
 }
 
-const TaskMenu: FC<ITaskMenuProps> = ({ onDelete }) => {
+const TaskMenu: FC<ITaskMenuProps> = ({ onDelete, taskData, onEdit }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,10 +35,17 @@ const TaskMenu: FC<ITaskMenuProps> = ({ onDelete }) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>Edit</span>
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+          <DropdownMenuItem asChild>
+            <EditTaskSheet
+              taskData={taskData}
+              onEdit={onEdit}
+              icon={
+                <div className="flex items-center px-2">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Edit</span>
+                </div>
+              }
+            />
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <ConfirmModal

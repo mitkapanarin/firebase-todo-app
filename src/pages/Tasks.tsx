@@ -2,6 +2,7 @@ import {
   useGetAllTasksQuery,
   useDeleteOneTaskMutation,
   useCreateOneTaskMutation,
+  useEditOneTaskMutation,
 } from "../store/API/taskAPI";
 import TaskModal from "../components/Modal/TaskModal";
 import { toast } from "react-toastify";
@@ -44,6 +45,7 @@ const Tasks = () => {
   });
   const [deleteOneTask] = useDeleteOneTaskMutation();
   const [createOneTask] = useCreateOneTaskMutation();
+  const [editOneTask] = useEditOneTaskMutation();
   const deleteTask = async (id: string) => {
     toast.promise(deleteOneTask({ id }).unwrap(), {
       pending: "Deleting task...",
@@ -52,7 +54,7 @@ const Tasks = () => {
     });
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     toast
       .promise(createOneTask(newTask).unwrap(), {
         pending: "Creating task...",
@@ -60,6 +62,14 @@ const Tasks = () => {
         error: "Error creating task",
       })
       .then(() => setNewTask(initialState));
+  };
+
+  const onEdit = async (data) => {
+    toast.promise(editOneTask(data).unwrap(), {
+      pending: "Editing task...",
+      success: "Task edited successfully",
+      error: "Error editing task",
+    });
   };
 
   if (isLoading || isFetching) {
@@ -102,7 +112,11 @@ const Tasks = () => {
                   {task?.description}
                 </TableCell>
                 <TableCell>
-                  <TaskMenu onDelete={() => deleteTask(task?.id)} />
+                  <TaskMenu
+                    onDelete={() => deleteTask(task?.id)}
+                    taskData={task}
+                    onEdit={onEdit}
+                  />
                 </TableCell>
               </TableRow>
             );
