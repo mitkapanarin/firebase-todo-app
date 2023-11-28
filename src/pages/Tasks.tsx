@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { NewTaskType } from "../types/types";
+import { NewTaskType, UpdateTaskType } from "../types/types";
 import {
   Table,
   TableBody,
@@ -64,7 +64,7 @@ const Tasks = () => {
       .then(() => setNewTask(initialState));
   };
 
-  const onEdit = async (data) => {
+  const onEdit = async (data: UpdateTaskType) => {
     toast.promise(editOneTask(data).unwrap(), {
       pending: "Editing task...",
       success: "Task edited successfully",

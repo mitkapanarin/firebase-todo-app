@@ -9,20 +9,20 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import TaskForm from "../Form/TaskForm";
-import { ITaskProps } from "@/types/interface";
+import ProfileForm from "../Form/ProfileForm";
+import { IUpdateUser } from "@/types/interface";
 import { useState } from "react";
 
-const EditTaskSheet = ({
+const EditProfileSheet = ({
   icon,
-  taskData,
+  profileData,
   onEdit,
 }: {
   icon: React.ReactNode;
-  taskData: ITaskProps;
-  onEdit: (data: ITaskProps) => Promise<void>;
+  profileData: IUpdateUser;
+  onEdit: (data: IUpdateUser) => Promise<void>;
 }) => {
-  const [localdata, setLocalData] = useState(taskData);
+  const [localdata, setLocalData] = useState(profileData);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocalData({
@@ -41,13 +41,13 @@ const EditTaskSheet = ({
           }}
         >
           <SheetHeader>
-            <SheetTitle>Edit task</SheetTitle>
+            <SheetTitle>Edit Profile</SheetTitle>
             <SheetDescription>
-              Make changes to your Task here. Click save when you're done.
+              Make changes to your profile here. Click save when you're done.
             </SheetDescription>
           </SheetHeader>
           <div className="grid gap-4 py-4">
-            <TaskForm {...localdata} handleInput={handleInput} />
+            <ProfileForm {...localdata} handleInput={handleInput} />
           </div>
           <SheetFooter>
             <SheetClose asChild>
@@ -62,4 +62,4 @@ const EditTaskSheet = ({
   );
 };
 
-export default EditTaskSheet;
+export default EditProfileSheet;
