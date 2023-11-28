@@ -32,11 +32,14 @@ const Profile = () => {
   const dispatch = useDispatch();
   const [updateUserProfile] = useUpdateUserProfileMutation();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    formData: IUpdateUser
+  ) => {
     console.log("form clicked");
     e.preventDefault();
     await toast
-      .promise(updateUserProfile(data).unwrap(), {
+      .promise(updateUserProfile(formData).unwrap(), {
         pending: "Updating profile...",
         success: "Profile updated",
         error: "Profile update failed",
@@ -134,12 +137,15 @@ const Profile = () => {
               {user?.email}
             </p>
             <EditProfileSheet
-              icon={<div className="flex items-center">
-                <User className="mr-2 h-4 w-4" style={{ fill: 'green' }} />
-                <span>Edit Profile</span>
-              </div>}
+              icon={
+                <div className="flex items-center">
+                  <User className="mr-2 h-4 w-4" style={{ fill: "green" }} />
+                  <span>Edit Profile</span>
+                </div>
+              }
               profileData={data}
-              onEdit={handleSubmit} />
+              onEdit={handleSubmit}
+            />
             {/* <EditProfileModal
               button={
                 <div className="flex justify-center">

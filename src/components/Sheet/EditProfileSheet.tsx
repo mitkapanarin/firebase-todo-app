@@ -20,7 +20,10 @@ const EditProfileSheet = ({
 }: {
   icon: React.ReactNode;
   profileData: IUpdateUser;
-  onEdit: (data: IUpdateUser) => Promise<void>;
+  onEdit: (
+    e: React.FormEvent<HTMLFormElement>,
+    data: IUpdateUser
+  ) => Promise<void>;
 }) => {
   const [localdata, setLocalData] = useState(profileData);
 
@@ -37,7 +40,7 @@ const EditProfileSheet = ({
       <SheetContent>
         <form
           onSubmit={(e) => {
-            e.preventDefault();
+            onEdit(e, localdata);
           }}
         >
           <SheetHeader>
@@ -51,9 +54,7 @@ const EditProfileSheet = ({
           </div>
           <SheetFooter>
             <SheetClose asChild>
-              <Button onClick={() => onEdit(localdata)} type="submit">
-                Save changes
-              </Button>
+              <Button type="submit">Save changes</Button>
             </SheetClose>
           </SheetFooter>
         </form>
