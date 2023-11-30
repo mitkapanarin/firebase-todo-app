@@ -22,11 +22,12 @@ import {
 
 import { Button } from "@/components/ui/button";
 import TaskMenu from "@/components/Menu/TaskMenu";
+import dayjs from "dayjs";
 
 const Tasks = () => {
   const userID = useSelector((state: RootState) => state.user.uid);
   const initialState: NewTaskType = {
-    deadline: "",
+    deadline: new Date(),
     description: "",
     label: "",
     status: "",
@@ -43,6 +44,13 @@ const Tasks = () => {
   const { data, isError, isFetching, isLoading } = useGetAllTasksQuery({
     userID,
   });
+
+  const handleDateChange = (date: Date) => {
+    setNewTask({
+      ...newTask,
+      deadline: date,
+    });
+  };
   const [deleteOneTask] = useDeleteOneTaskMutation();
   const [createOneTask] = useCreateOneTaskMutation();
   const [editOneTask] = useEditOneTaskMutation();
@@ -78,12 +86,15 @@ const Tasks = () => {
   if (isError) {
     return <div className="">Error, please try again</div>;
   }
+
+  console.log("task deadline", data);
   return (
     <div className="my-6">
       <TaskModal
         createTaskFn={onSubmit}
         newTask={newTask}
         handleInput={handleInput}
+        handleDateChange={handleDateChange}
       />
       <Table className="border mt-4">
         <TableCaption>A list of your Todos.</TableCaption>
@@ -101,8 +112,11 @@ const Tasks = () => {
               <TableRow key={task?.id}>
                 <TableCell className="font-medium">{task?.title}</TableCell>
                 <TableCell>
-                  {/* {task?.deadline} */}
-                  deadline here
+                  {task?.deadline
+                    ? dayjs(task?.deadline?.seconds * 1000).format(
+                        "ddd, MMMM D,YYYY"
+                      )
+                    : "No deadline"}
                 </TableCell>
                 <TableCell>{task?.status}</TableCell>
                 <TableCell className="flex  items-center gap-3">

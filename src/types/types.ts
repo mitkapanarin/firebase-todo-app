@@ -21,6 +21,7 @@ export type NewTaskTypeForm = Pick<
   "deadline" | "description" | "label" | "status" | "title"
 > & {
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDateChange: (date: Date) => void;
 };
 
 export type UpdateTaskType = Pick<
@@ -29,7 +30,7 @@ export type UpdateTaskType = Pick<
 >;
 
 export type NewProfileTypeForm = Pick<
-IUpdateUser,
+  IUpdateUser,
   "phoneNumber" | "photoURL" | "name"
 > & {
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
