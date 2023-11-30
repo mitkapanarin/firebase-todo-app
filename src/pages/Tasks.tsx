@@ -113,10 +113,11 @@ const Tasks = () => {
                 <TableCell className="font-medium">{task?.title}</TableCell>
                 <TableCell>
                   {task?.deadline
-                    ? dayjs(task?.deadline?.seconds * 1000).format(
-                        "ddd, MMMM D,YYYY"
+                    ? // @ts-ignore
+                      dayjs(task?.deadline?.seconds * 1000).format(
+                        "dddd, MMMM D, YYYY",
                       )
-                    : "No deadline"}
+                    : "No Deadline"}
                 </TableCell>
                 <TableCell>{task?.status}</TableCell>
                 <TableCell className="flex  items-center gap-3">

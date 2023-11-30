@@ -1,16 +1,11 @@
 import { toast } from "react-toastify";
 import {
   RootState,
-  // loginSuccess,
-  // useLogoutMutation,
   useUpdateUserProfileMutation,
 } from "../store";
-// import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IUpdateUser } from "../types/interface";
 import { useState } from "react";
-// import EditProfileForm from "../components/Form/EditProfileForm";
-// import EditProfileModal from "../components/Modal/EditProfileModal";
 import { useUploadImageMutation } from "../store/API/storageAPI";
 import EditProfileSheet from "@/components/Sheet/EditProfileSheet";
 import { User } from "lucide-react";
@@ -19,9 +14,7 @@ import { User } from "lucide-react";
 const Profile = () => {
   const [uploadImage] = useUploadImageMutation();
 
-  // const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
-  // const [logout] = useLogoutMutation();
   const initialState: Pick<IUpdateUser, "name" | "photoURL" | "phoneNumber"> = {
     name: "Random Name",
     photoURL:
@@ -44,22 +37,8 @@ const Profile = () => {
         success: "Profile updated",
         error: "Profile update failed",
       })
-      // .then((res: IUpdateUser) => dispatch(loginSuccess(res)))
       .catch((err) => toast.error(err));
   };
-
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-  //   setData({ ...data, [e.target.name]: e.target.value });
-
-  // const appSignout = async () =>
-  //   await toast
-  //     .promise(logout(null).unwrap, {
-  //       pending: "Logging out...",
-  //       success: "Logout successful",
-  //       error: "Logout failed",
-  //     })
-  //     // .then(() => setIsMenuOpen(false))
-  //     .then(() => navigate("/login"));
 
   const [file, setFile] = useState({});
 
@@ -146,28 +125,9 @@ const Profile = () => {
               profileData={data}
               onEdit={handleSubmit}
             />
-            {/* <EditProfileModal
-              button={
-                <div className="flex justify-center">
-                  <button className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded-full">
-                    Edit Profile
-                  </button>
-                </div>
-              }
-              title="Edit Profile"
-              onConfirm={handleSubmit}
-              onCancel={() => console.log("cancel")}
-              onClose={() => console.log("close")}
-            >
-              <EditProfileForm
-                {...data}
-                handleInputChange={handleInputChange}
-              />
-            </EditProfileModal> */}
-            <br />
-            {/* <button onClick={appSignout}>click to logout</button> */}
-            <br />
+                <br />
             <form onSubmit={uploadImages}>
+               {/* @ts-ignore */}
               {file?.name}
               <input
                 type="file"
@@ -284,10 +244,6 @@ const Profile = () => {
             src="https://source.unsplash.com/MP0IUfwrn0A"
             className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
           />
-        </div>
-
-        <div className="absolute top-0 right-0 h-12 w-18 p-4">
-          <button className="js-change-theme focus:outline-none">🌙</button>
         </div>
       </div>
     </div>
