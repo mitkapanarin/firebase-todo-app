@@ -23,7 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import TaskMenu from "@/components/Menu/TaskMenu";
 import dayjs from "dayjs";
-import StatusPopover from "@/components/Modal/StatusPopover";
+// import StatusPopover from "@/components/Modal/StatusPopover";
 
 const Tasks = () => {
   const userID = useSelector((state: RootState) => state.user.uid);
@@ -52,6 +52,14 @@ const Tasks = () => {
       deadline: date,
     });
   };
+
+  const handleStatusChange = (value: string) => {
+    setNewTask({
+      ...newTask,
+      status: value, // Update the 'status' property with the provided value
+    });
+  };
+  
   const [deleteOneTask] = useDeleteOneTaskMutation();
   const [createOneTask] = useCreateOneTaskMutation();
   const [editOneTask] = useEditOneTaskMutation();
@@ -96,6 +104,7 @@ const Tasks = () => {
         newTask={newTask}
         handleInput={handleInput}
         handleDateChange={handleDateChange}
+        handleStatusChange={handleStatusChange}
       />
       <Table className="border mt-4">
         <TableCaption>A list of your Todos.</TableCaption>
@@ -122,7 +131,7 @@ const Tasks = () => {
                 </TableCell>
                 <TableCell>
                   {task?.status}
-                  {/* <StatusPopover/> */}
+                  {/* <StatusPopover/>a */}
                   </TableCell>
                 <TableCell className="flex  items-center gap-3">
                   <Button variant="outline" size="sm">
