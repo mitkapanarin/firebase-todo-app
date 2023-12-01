@@ -121,8 +121,8 @@ const Tasks = () => {
                     : "No Deadline"}
                 </TableCell>
                 <TableCell>
-                  {/* {task?.status} */}
-                  <StatusPopover/>
+                  {task?.status}
+                  {/* <StatusPopover/> */}
                   </TableCell>
                 <TableCell className="flex  items-center gap-3">
                   <Button variant="outline" size="sm">
