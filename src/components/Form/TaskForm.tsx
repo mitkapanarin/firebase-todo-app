@@ -3,6 +3,7 @@ import InputFieldWithLabel from "./InputFieldWithLabel";
 import { NewTaskTypeForm } from "@/types/types";
 import DateCalendar from "../Calendar/DateCalendar";
 import { Label } from "../ui/label";
+import StatusPopover from "../Modal/StatusPopover";
 
 const TaskForm: FC<NewTaskTypeForm> = ({
   deadline,
@@ -12,6 +13,7 @@ const TaskForm: FC<NewTaskTypeForm> = ({
   title,
   handleInput,
   handleDateChange,
+  handleStatusChange,
 }) => {
   return (
     <>
@@ -38,7 +40,11 @@ const TaskForm: FC<NewTaskTypeForm> = ({
         name="label"
         required
       />
-      <InputFieldWithLabel
+      <div className="flex flex-col gap-2">
+        <Label>Status</Label>
+        <StatusPopover value={status} setValue={handleStatusChange} />
+      </div>
+      {/* <InputFieldWithLabel
         onChange={handleInput}
         type="text"
         value={status}
@@ -46,7 +52,7 @@ const TaskForm: FC<NewTaskTypeForm> = ({
         label="Status"
         name="status"
         required
-      />
+      /> */}
       <InputFieldWithLabel
         onChange={handleInput}
         type="text"

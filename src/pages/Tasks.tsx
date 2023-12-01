@@ -23,6 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import TaskMenu from "@/components/Menu/TaskMenu";
 import dayjs from "dayjs";
+import StatusPopover from "@/components/Modal/StatusPopover";
 
 const Tasks = () => {
   const userID = useSelector((state: RootState) => state.user.uid);
@@ -119,7 +120,10 @@ const Tasks = () => {
                       )
                     : "No Deadline"}
                 </TableCell>
-                <TableCell>{task?.status}</TableCell>
+                <TableCell>
+                  {/* {task?.status} */}
+                  <StatusPopover/>
+                  </TableCell>
                 <TableCell className="flex  items-center gap-3">
                   <Button variant="outline" size="sm">
                     {task?.label ? task?.label : "No label"}
