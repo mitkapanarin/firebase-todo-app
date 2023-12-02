@@ -4,9 +4,10 @@ import {
   useCreateOneTaskMutation,
   useEditOneTaskMutation,
 } from "../store/API/taskAPI";
+import { themeSwitch, ThemeTypesEnum } from "../store/Slices/systemSlice";
 import TaskModal from "../components/Modal/TaskModal";
 import { toast } from "react-toastify";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { NewTaskType, UpdateTaskType } from "../types/types";
@@ -88,9 +89,16 @@ const Tasks = () => {
       error: "Error editing task",
     });
   };
+  const mode: string = useSelector((x: RootState) => x.system.mode);
+
+  const isDarkMode = mode === ThemeTypesEnum.DARK;
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(ThemeTypesEnum.DARK, isDarkMode);
+  }, [isDarkMode]);
 
   if (isLoading || isFetching) {
-    return <div className="text-black">Loading please wait....</div>;
+    return <div className={isDarkMode ? 'text-white' : 'text-black'}>Loading please wait....</div>;
   }
   if (isError) {
     return <div className="">Error, please try again</div>;
