@@ -31,6 +31,20 @@ const EditTaskSheet = ({
     });
   };
 
+  const handleDateChange = (date: Date) => {
+    setLocalData({
+      ...localdata,
+      deadline: date, 
+    });
+  };
+
+  const handleStatusChange = (status: string) => {
+    setLocalData({
+      ...localdata,
+      status: status,
+    });
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>{icon}</SheetTrigger>
@@ -47,7 +61,7 @@ const EditTaskSheet = ({
             </SheetDescription>
           </SheetHeader>
           <div className="grid gap-4 py-4">
-            <TaskForm {...localdata} handleInput={handleInput} />
+            <TaskForm {...localdata} handleInput={handleInput} handleDateChange={handleDateChange} handleStatusChange={handleStatusChange} />
           </div>
           <SheetFooter>
             <SheetClose asChild>

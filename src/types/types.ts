@@ -22,6 +22,7 @@ export type NewTaskTypeForm = Pick<
 > & {
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleDateChange: (date: Date) => void;
+  handleStatusChange: (statusValue: string) => void;
 };
 
 export type UpdateTaskType = Pick<

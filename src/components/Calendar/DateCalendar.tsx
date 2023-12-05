@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, isValid } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -17,6 +17,13 @@ const DateCalendar = ({
   date: Date;
   setDate: (date: Date) => void;
 }) => {
+  const formattedDate = date && isValid(date) ? format(date, "PPP") : "Pick a date";
+
+  const setDateHandler = (date: Date) => {
+    const selectedDate = date || new Date();
+    setDate(selectedDate);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -28,7 +35,7 @@ const DateCalendar = ({
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {formattedDate}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -36,7 +43,8 @@ const DateCalendar = ({
           className="w-auto"
           mode="single"
           selected={date}
-          onSelect={setDate}
+          //@ts-ignore
+          onSelect={(selectedDate) => setDateHandler(selectedDate)}
           initialFocus
         />
       </PopoverContent>

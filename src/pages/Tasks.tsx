@@ -4,9 +4,10 @@ import {
   useCreateOneTaskMutation,
   useEditOneTaskMutation,
 } from "../store/API/taskAPI";
+import { themeSwitch, ThemeTypesEnum } from "../store/Slices/systemSlice";
 import TaskModal from "../components/Modal/TaskModal";
 import { toast } from "react-toastify";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { NewTaskType, UpdateTaskType } from "../types/types";
@@ -23,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import TaskMenu from "@/components/Menu/TaskMenu";
 import dayjs from "dayjs";
+// import StatusPopover from "@/components/Modal/StatusPopover";
 
 const Tasks = () => {
   const userID = useSelector((state: RootState) => state.user.uid);
@@ -51,6 +53,14 @@ const Tasks = () => {
       deadline: date,
     });
   };
+
+  const handleStatusChange = (value: string) => {
+    setNewTask({
+      ...newTask,
+      status: value, // Update the 'status' property with the provided value
+    });
+  };
+  
   const [deleteOneTask] = useDeleteOneTaskMutation();
   const [createOneTask] = useCreateOneTaskMutation();
   const [editOneTask] = useEditOneTaskMutation();
@@ -79,9 +89,16 @@ const Tasks = () => {
       error: "Error editing task",
     });
   };
+  const mode: string = useSelector((x: RootState) => x.system.mode);
+
+  const isDarkMode = mode === ThemeTypesEnum.DARK;
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(ThemeTypesEnum.DARK, isDarkMode);
+  }, [isDarkMode]);
 
   if (isLoading || isFetching) {
-    return <div className="text-black">Loading please wait....</div>;
+    return <div className={isDarkMode ? 'text-white' : 'text-black'}>Loading please wait....</div>;
   }
   if (isError) {
     return <div className="">Error, please try again</div>;
@@ -95,6 +112,7 @@ const Tasks = () => {
         newTask={newTask}
         handleInput={handleInput}
         handleDateChange={handleDateChange}
+        handleStatusChange={handleStatusChange}
       />
       <Table className="border mt-4">
         <TableCaption>A list of your Todos.</TableCaption>
@@ -113,12 +131,16 @@ const Tasks = () => {
                 <TableCell className="font-medium">{task?.title}</TableCell>
                 <TableCell>
                   {task?.deadline
-                    ? dayjs(task?.deadline?.seconds * 1000).format(
-                        "ddd, MMMM D,YYYY"
+                    ? // @ts-ignore
+                      dayjs(task?.deadline?.seconds * 1000).format(
+                        "dddd, MMMM D, YYYY",
                       )
-                    : "No deadline"}
+                    : "No Deadline"}
                 </TableCell>
-                <TableCell>{task?.status}</TableCell>
+                <TableCell>
+                  {task?.status}
+                  {/* <StatusPopover/>a */}
+                  </TableCell>
                 <TableCell className="flex  items-center gap-3">
                   <Button variant="outline" size="sm">
                     {task?.label ? task?.label : "No label"}
