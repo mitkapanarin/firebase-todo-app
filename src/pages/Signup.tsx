@@ -8,7 +8,6 @@ import { IUserSignInData } from "../types/interface";
 
 const Signup = () => {
   const initialState: IUserSignInData = {
-    name: "",
     email: "",
     password: "",
   };
@@ -59,15 +58,6 @@ const Signup = () => {
               Google signup
             </button>
             <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
-              <InputField
-                label="Your Name"
-                onChange={handleChange}
-                name="name"
-                placeholder="Someone"
-                required
-                type="text"
-                value={data.name}
-              />
               <InputField
                 label="Your Email"
                 onChange={handleChange}
