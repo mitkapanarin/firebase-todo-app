@@ -93,6 +93,7 @@ const Login = () => {
                 variant="link"
                 size="sm"
                 className="text-xs"
+                onClick={()=>navigate("/forgot-password")}
               >
                 Forgot Password
               </Button>
