@@ -59,57 +59,57 @@ const Signup = () => {
 
   return (
     <section className="h-[90vh] flex justify-center items-center">
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Signup for a new profile</CardTitle>
-        <CardDescription>
-          Please provide email & password to Signup
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={onSubmit}>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                value={data?.email}
-                onChange={handleChange}
-                placeholder="johndoe@gmail.com"
-              />
+      <Card className="w-[350px]">
+        <CardHeader>
+          <CardTitle>Signup for a new profile</CardTitle>
+          <CardDescription>
+            Please provide email & password to Signup
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={onSubmit}>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  value={data?.email}
+                  onChange={handleChange}
+                  placeholder="johndoe@gmail.com"
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  placeholder="******"
+                  value={data?.password}
+                  onChange={handleChange}
+                />
+              </div>
+              <Button variant="secondary" className="w-full">
+                Signup
+              </Button>
             </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                placeholder="******"
-                value={data?.password}
-                onChange={handleChange}
-              />
-            </div>
-            <Button variant="secondary" className="w-full">
-              Signup
-            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="flex flex-col">
+          <div className="flex justify-center items-center gap-2 mb-3">
+            <Separator className="h-[2px] w-24" />
+            <p>or</p>
+            <Separator className="h-[2px] w-24" />
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex flex-col">
-        <div className="flex justify-center items-center gap-2 mb-3">
-          <Separator className="h-[2px] w-24" />
-          <p>or</p>
-          <Separator className="h-[2px] w-24" />
-        </div>
-        <Button onClick={GoogleAuth} variant="default" className="w-full">
-          Google Signup
-        </Button>
-        <Link to="/login" className="text-xs my-2 text-primary">
-         Already have an account ? Login
-        </Link>
-      </CardFooter>
-    </Card>
-  </section>
+          <Button onClick={GoogleAuth} variant="default" className="w-full">
+            Google Signup
+          </Button>
+          <Link to="/login" className="text-xs my-2 text-primary">
+            Already have an account ? Login
+          </Link>
+        </CardFooter>
+      </Card>
+    </section>
   );
 };
 
