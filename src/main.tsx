@@ -7,6 +7,14 @@ import { persistedStore, store } from "./store/index.ts";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "aos/dist/aos.css"; // Import AOS styles
+
+import "./styles/global.css";
+
+// import "bootstrap/dist/css/bootstrap.css";
+// import "bootstrap/dist/js/bootstrap.js";
+// import "../../styles/plugin.css";
+// import "../../styles/style.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -16,5 +24,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <ToastContainer />
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

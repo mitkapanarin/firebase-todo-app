@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { ThemeTypesEnum } from "../../types/enum";
-import { TailwindThemeType } from "../../types/types";
+import { ThemeTypes } from "../../types/types";
+import { ThemeTypesEnum } from "../../types/enums";
 
 interface SystemState {
-  mode: TailwindThemeType;
+  mode: ThemeTypes;
 }
 
 const initialState: SystemState = {
@@ -15,10 +15,7 @@ export const sysmtemSlice = createSlice({
   name: "system",
   initialState,
   reducers: {
-    themeSwitch: (
-      state: SystemState,
-      action: PayloadAction<TailwindThemeType>
-    ) => {
+    themeSwitch: (state: SystemState, action: PayloadAction<ThemeTypes>) => {
       state.mode = action.payload;
     },
     resetSystem: () => initialState,
@@ -26,5 +23,3 @@ export const sysmtemSlice = createSlice({
 });
 
 export const { themeSwitch, resetSystem } = sysmtemSlice.actions;
-
-export { ThemeTypesEnum };

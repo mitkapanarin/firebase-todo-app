@@ -1,28 +1,26 @@
-import React, { useState, useEffect } from "react";
-import InputField from "../Components/Form/InputField";
-import { toast } from "react-toastify";
-import { useSetNewPassWordMutation } from "../store";
-import { IUserSignInData } from "../types/interface";
+import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { IUserSignInData } from "@/types/interface";
+import { useSetNewPassWordMutation } from "@/store";
+import { toast } from "react-toastify";
+import { Label } from "@radix-ui/react-label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
   const initialState: Pick<IUserSignInData, "password"> = {
     password: "",
   };
+  const [data, setData] = useState(initialState);
 
   const oobCode = new URLSearchParams(window.location.search).get(
-    "oobCode"
+    "oobCode",
   ) as string;
-
-  const [data, setData] = useState(initialState);
 
   const [setNewPassWord] = useSetNewPassWordMutation();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setData({ ...data, [e.target.name]: e.target.value });
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleResetPassword = async (e: FormEvent) => {
     e.preventDefault();
     await toast
       .promise(
@@ -34,48 +32,44 @@ const ResetPassword = () => {
           pending: "Resetting password...",
           success: "Password Reset successful",
           error: "Failed to reset password!",
-        }
+        },
       )
       .then(() => setData(initialState))
       .then(() => navigate("/login"))
       .catch((err) => toast.error(err));
   };
 
-  useEffect(() => {
-    if (!oobCode) {
-      navigate("/login");
-    }
-  }, [oobCode]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setData({ ...data, [e.target.name]: e.target.value });
 
   return (
-    <section className="">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Set New password
-            </h1>
-            <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
-              <InputField
-                label="Your Password"
-                onChange={handleChange}
-                name="password"
-                placeholder="******"
-                required
-                type="password"
-                value={data.password}
-              />
-              <button
-                type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Reset Password
-              </button>
-            </form>
-          </div>
+    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+      <div className="w-[300px] md:w-[400px] rounded-lg shadow-lg bg-white p-6 space-y-6 border border-gray-200 dark:border-gray-700">
+        <div className="space-y-2 text-center">
+          <h1 className="text-3xl font-bold">Password Reset</h1>
+          <p className="text-zinc-500 dark:text-zinc-400">
+            Select a strong password of minimum 6 characters
+          </p>
+        </div>
+        <div className="space-y-4">
+          <form onSubmit={handleResetPassword} className="space-y-2">
+            <Label htmlFor="email">Password</Label>
+            <Input
+              id="email"
+              placeholder="******"
+              required
+              type="password"
+              name="password"
+              onChange={handleChange}
+              value={data.password}
+            />
+            <Button type="submit" className="w-full">
+              Confirm
+            </Button>
+          </form>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

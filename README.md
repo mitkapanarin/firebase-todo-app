@@ -1,27 +1,32 @@
-# react-firebase-todo-app
-# Project Description
+## Features
 
-This project is aimed at enhancing my skills and knowledge by building a comprehensive application using React and Firebase. 
+- [x] Register/Login with Email and Password
+- [x] Register/Login with Google
+- [x] Email Verification and Password Reset
+- [x] Todo List Management
+- [x] Weather Forecast
+- [x] Device Synchonization
+- [x] Secured APIs
+- [x] Activity Log
+- [x] User Profile
+- [x] Timeout Implementation Based on IP Address
+- [x] Dark Mode/Light Mode
 
-## Topics covered in the tutorial
+## Tech Stack
 
-* React
-* rtk, rtk query for state management
-* firebase firestore
-* firebase storage
-* firebase authentication, reset password, google login, email signup, email verification
-* tailwind css
-*
+- ReactJS
+- NodeJS
+- Tailwind CSS
+- Firebase
 
-## Todo
+## Installation
 
-* [] add code quality tools -> prettier, eslint, lint staged, lint, husky
-* [] add code coverage tools
-* [] add CI/CD tools
-* [] add code documentation tools
-* [x] add redux
-* [x] add firebase
-* [x] add navbar
-* [] add Input Field
-* [x] add tailwind css
-* [] login, signup, reset pass, forgot pass, email verification page designs
+### Prerequisites
+
+- NodeJS
+- NPM
+- Firebase CLI
+- Tailwind CSS
+- Git
+- VS Code
+- Chrome

@@ -6,13 +6,12 @@ import {
   collection,
   deleteDoc,
   doc,
-  // getDoc,
   query,
   where,
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../Config/firebase-config";
+import { db } from "../../config/firebase-config";
 import { NewTaskType, UpdateTaskType } from "../../types/types";
 
 const tasksCollectionName = "tasks";
@@ -31,7 +30,7 @@ export const taskAPI = createApi({
       queryFn: async ({ userID }) => {
         const requestQuery = query(
           collection(db, tasksCollectionName),
-          where("userOwner", "==", userID)
+          where("userOwner", "==", userID),
         );
 
         const getAlltasks = await getDocs(requestQuery);

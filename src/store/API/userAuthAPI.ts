@@ -1,5 +1,5 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { auth, db, googleProvider } from "../../Config/firebase-config";
+import { auth, db, googleProvider } from "../../config/firebase-config";
 import {
   createUserWithEmailAndPassword,
   UserCredential,
@@ -8,10 +8,15 @@ import {
   signOut,
   confirmPasswordReset,
   sendPasswordResetEmail,
-  updateProfile,
 } from "firebase/auth";
-import { IUserSignInData, IUpdateUser } from "../../types/interface";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  IUserSignInData,
+  iActivityLogData,
+  IUserData,
+} from "../../types/interface";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { nanoid } from "@reduxjs/toolkit";
+import { getAuth } from "firebase/auth";
 
 const usersCollectionName = "users";
 
@@ -42,38 +47,48 @@ export const userAuthAPI = createApi({
           const response: UserCredential = await createUserWithEmailAndPassword(
             auth,
             email,
-            password
+            password,
           );
 
-          const userID = response.user?.uid;
-          const userDocRef = doc(db, usersCollectionName, userID);
+          const documentName = response?.user?.uid;
+          const userDocRef = doc(db, usersCollectionName, documentName);
 
           await setDoc(userDocRef, {
-            uid: userID,
+            uid: response?.user?.uid,
+            displayName: response?.user?.displayName,
             firstName: "",
             lastName: "",
-            displayName: response.user?.displayName,
-            email: response.user?.email,
-            phoneNumber: response.user?.phoneNumber,
-            address: "",
-            photoURL: response.user?.photoURL,
-            facebook: "",
-            twitter: "",
-            instagram: "",
-            linkedin: "",
+            universityName: "",
+            department: "",
+            major: "",
+            studentID: "",
+            phoneNumber: response?.user?.phoneNumber,
+            photoURL: response?.user?.photoURL,
+          });
+
+          const logsCollectionRef = collection(userDocRef, "logs");
+          const logDocumentName = nanoid();
+
+          await setDoc(doc(logsCollectionRef, logDocumentName), {
+            // @ts-ignore
+            clientPlatform: getAuth()?.config?.clientPlatform,
+            sdkClientVersion: getAuth()?.config?.sdkClientVersion,
+            action: "New Account Created With Email",
+            time: new Date(),
           });
 
           return {
-            data: response, // Corrected the return type to match QueryReturnValue
+            data: response,
           };
         } catch (err) {
           return {
-            error: (err as Error)?.message, // Added type assertion to access message property
+            error: (err as Error)?.message,
           };
         }
       },
       invalidatesTags: ["User"],
     }),
+
     emailLogin: builder.mutation<UserCredential, IUserSignInData>({
       queryFn: async (user: IUserSignInData) => {
         try {
@@ -81,8 +96,25 @@ export const userAuthAPI = createApi({
           const response: UserCredential = await signInWithEmailAndPassword(
             auth,
             email,
-            password
+            password,
           );
+
+          const collectionName = usersCollectionName;
+          const documentName = response?.user?.uid;
+          const subCollectionName = "logs";
+          const subDocumentName = nanoid();
+
+          const userDocRef = doc(db, collectionName, documentName);
+          const logsCollectionRef = collection(userDocRef, subCollectionName);
+
+          await setDoc(doc(logsCollectionRef, subDocumentName), {
+            // @ts-ignore
+            clientPlatform: getAuth()?.config?.clientPlatform,
+            sdkClientVersion: getAuth()?.config?.sdkClientVersion,
+            action: "Account Login With Email",
+            time: new Date(),
+          });
+
           return {
             data: response,
           };
@@ -98,6 +130,49 @@ export const userAuthAPI = createApi({
       queryFn: async () => {
         try {
           const response = await signInWithPopup(auth, googleProvider);
+
+          const collectionName = usersCollectionName;
+          const documentName = response?.user?.uid;
+          const subCollectionName = "logs";
+          const subDocumentName = nanoid();
+
+          const userDocRef = doc(db, collectionName, documentName);
+          // Check if the user document exists
+          const userDocSnapshot = await getDoc(userDocRef);
+
+          if (userDocSnapshot.exists()) {
+            const logsCollectionRef = collection(userDocRef, subCollectionName);
+            await setDoc(doc(logsCollectionRef, subDocumentName), {
+              // @ts-ignore
+              clientPlatform: getAuth()?.config?.clientPlatform,
+              sdkClientVersion: getAuth()?.config?.sdkClientVersion,
+              action: "Account Login with Google",
+              time: new Date(),
+            });
+          } else {
+            await setDoc(userDocRef, {
+              uid: response?.user?.uid,
+              displayName: response?.user?.displayName,
+              firstName: "",
+              lastName: "",
+              universityName: "",
+              department: "",
+              major: "",
+              studentID: "",
+              phoneNumber: response?.user?.phoneNumber,
+              photoURL: response?.user?.photoURL,
+            });
+
+            const logsCollectionRef = collection(userDocRef, subCollectionName);
+            await setDoc(doc(logsCollectionRef, subDocumentName), {
+              // @ts-ignore
+              clientPlatform: getAuth()?.config?.clientPlatform,
+              sdkClientVersion: getAuth()?.config?.sdkClientVersion,
+              action: "New Account Signup with Google",
+              time: new Date(),
+            });
+          }
+
           return {
             data: response,
           };
@@ -109,6 +184,7 @@ export const userAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
+
     sendResetPassWordEmail: builder.mutation<
       string,
       {
@@ -131,6 +207,7 @@ export const userAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
+
     setNewPassWord: builder.mutation<
       string,
       {
@@ -152,31 +229,47 @@ export const userAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
-    // update user profile
-    updateUserProfile: builder.mutation<
-      IUpdateUser,
-      Pick<IUpdateUser, "name" | "photoURL" | "phoneNumber">
+
+    // get user profile
+    getProfileData: builder.query<
+      IUserData,
+      {
+        userId: string;
+      }
     >({
-      queryFn: async ({ name, photoURL, phoneNumber }) => {
-        console.log("data requests ", name, photoURL, phoneNumber);
+      queryFn: async ({ userId }) => {
         try {
-          const user = auth.currentUser;
-          if (user) {
-            // Update the user's profile with the provided name and photoURL
-            await updateProfile(user, {
-              displayName: name,
-              photoURL,
-              phoneNumber,
+          const userDoc = await getDoc(doc(db, usersCollectionName, userId));
+          const docData = userDoc.data();
+
+          return {
+            data: docData as IUserData,
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      providesTags: ["User"],
+    }),
+
+    // update user profile
+    updateUserProfile: builder.mutation({
+      queryFn: async (data: IUserData) => {
+        try {
+          const findUserDoc = await getDoc(
+            doc(db, usersCollectionName, data?.uid),
+          );
+
+          if (findUserDoc.exists()) {
+            await setDoc(doc(db, usersCollectionName, data?.uid), {
+              ...data,
             });
           }
+
           return {
-            data: {
-              name,
-              photoURL,
-              email: user?.email,
-              uid: user?.uid,
-              phoneNumber: user?.phoneNumber,
-            } as IUpdateUser,
+            data: null,
           };
         } catch (err) {
           return {
@@ -186,8 +279,40 @@ export const userAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
+
+    activityLogs: builder.query<
+      iActivityLogData[],
+      {
+        uid: string;
+      }
+    >({
+      queryFn: async ({ uid }) => {
+        try {
+          const logsCollectionRef = collection(
+            db,
+            usersCollectionName,
+            uid, // this is the name of document
+            "logs", // name of subcollection
+          );
+
+          const querySnapshot = await getDocs(logsCollectionRef);
+          const logsData = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          return { data: logsData as iActivityLogData[] };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      providesTags: ["User"],
+    }),
   }),
 });
+
 export const {
   useEmailSignupMutation,
   useEmailLoginMutation,
@@ -196,4 +321,6 @@ export const {
   useSendResetPassWordEmailMutation,
   useSetNewPassWordMutation,
   useUpdateUserProfileMutation,
+  useActivityLogsQuery,
+  useGetProfileDataQuery,
 } = userAuthAPI;

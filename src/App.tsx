@@ -1,69 +1,85 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
 import {
   Home,
-  ErrorPage,
-  ForgotPassword,
+  Signup,
   Login,
   ResetPassword,
-  Signup,
+  ForgotPassword,
+  ErrorPage,
+  Pricing,
+  UseCases,
+  Contact,
   Tasks,
-  Profile,
+  DetailsPage,
+  ProfilePage,
+  ActivityLogs,
 } from "./pages";
-import Navbar from "./components/Navbar";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./Config/firebase-config";
-// import Cookies from "js-cookie";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./config/firebase-config";
 import { loginSuccess, logoutSuccess } from "./store";
-import { AuthenticationRoutes, ProtectedRoutes } from "./pages/utils";
-import { useEffect } from "react";
+import {
+  AuthenticationRoutes,
+  ProtectedRoutes,
+  DashboardProtectedRoutes,
+} from "./pages/utils";
+
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      console.log(user);
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         const uid = user.uid;
         const photoURL = user.photoURL as string;
         const name = user.displayName as string;
         const email = user.email as string;
-        const phoneNumber = user.phoneNumber as string;
-        // @ts-ignore
-        // Cookies.set("accessToken", user?.accessToken);
         dispatch(
           loginSuccess({
             uid,
             photoURL,
             name,
             email,
-            phoneNumber,
-          })
+            emailVerified: false,
+          }),
         );
       } else {
-        // Cookies.remove("accessToken");
         dispatch(logoutSuccess());
       }
     });
-  }, []);
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
-      <Navbar>
-        <Routes>
+      <Routes>
+        <Route element={<AuthenticationRoutes />}>
+          {/* General pages */}
           <Route path="/" element={<Home />} />
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/tasks" element={<Tasks />} />
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-          <Route element={<AuthenticationRoutes />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-          </Route>
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </Navbar>
+          <Route path="/use-cases" element={<UseCases />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/contact" element={<Contact />} />
+          {/* Authentication pages */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+        </Route>
+
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/activity-logs" element={<ActivityLogs />} />
+        </Route>
+
+        <Route element={<DashboardProtectedRoutes />}>
+          <Route path="/profile-page" element={<ProfilePage />} />
+          <Route path="/details-page" element={<DetailsPage />} />
+        </Route>
+
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
     </BrowserRouter>
   );
 };
+
 export default App;

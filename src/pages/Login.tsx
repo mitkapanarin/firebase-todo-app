@@ -1,38 +1,25 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import { useEmailLoginMutation, useGoogleSignupMutation } from "../store";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IUserSignInData } from "../types/interface";
-
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { useEmailLoginMutation, useGoogleSignupMutation } from "../store";
+import { toast } from "react-toastify";
+import { LuChrome } from "react-icons/lu";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Terms from "./Terms";
 
-const Login = () => {
+const Login: React.FC = () => {
   const initialState: IUserSignInData = {
-    email: "khondokoralam@gmail.com",
-    password: "1234567",
+    email: "",
+    password: "",
   };
-
   const navigate = useNavigate();
   const [data, setData] = useState(initialState);
-
   const [emailLogin] = useEmailLoginMutation();
   const [googleSignup] = useGoogleSignupMutation();
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setData({ ...data, [e.target.name]: e.target.value });
-
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await toast
@@ -42,10 +29,9 @@ const Login = () => {
         error: "Login failed",
       })
       .then(() => setData(initialState))
-      .then(() => navigate("/profile"))
+      .then(() => navigate("/profile-page"))
       .catch((err) => toast.error(err));
   };
-
   const GoogleAuth = async () =>
     await toast
       .promise(googleSignup(null).unwrap(), {
@@ -53,72 +39,90 @@ const Login = () => {
         success: "Successfully created user!",
         error: "Could not create user!",
       })
-      .then(() => navigate("/profile"))
+      .then(() => navigate("/profile-page"))
       .catch((err) => toast.error(err));
 
+  const [showTerms, setShowTerms] = useState(false); // Add this line for state
+
   return (
-    <section className="h-[90vh] flex justify-center items-center">
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>
-            Please provide email & password to Login
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={onSubmit}>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  value={data?.email}
-                  onChange={handleChange}
-                  placeholder="john doe"
-                />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  placeholder="******"
-                  value={data?.password}
-                  onChange={handleChange}
-                />
-              </div>
-              <Button
-                type="button"
-                variant="link"
-                size="sm"
-                className="text-xs"
-                onClick={()=>navigate("/forgot-password")}
-              >
-                Forgot Password
-              </Button>
-              <Button variant="secondary" className="w-full">
-                Login
-              </Button>
-            </div>
+    <div className="bg-primary-foreground min-h-screen flex items-center justify-center">
+      <div className="max-w-sm rounded-lg shadow-lg bg-primary-foreground p-6 space-y-6 border border-gray-200 dark:border-gray-700 relative">
+        <div className="space-y-2 text-center">
+          <h1 className="text-3xl font-bold">Login</h1>
+          <p className="text-zinc-500 dark:text-zinc-400">
+            By logging in, you accept our{" "}
+            <button
+              className="text-blue-500 hover:text-blue-700"
+              onClick={() => setShowTerms(true)} // Set showTerms to true on click
+            >
+              terms
+            </button>{' '}
+            and{' '}
+            <Link className="text-blue-500 hover:text-blue-700" to="/login">
+              privacy policy
+            </Link>
+          </p>
+          <Terms showTerms={showTerms} onClose={() => setShowTerms(false)} /> {/* Add Terms component */}
+        </div>
+        <div className="space-y-4">
+          <form onSubmit={onSubmit} className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              placeholder="your_email@gmail.com"
+              required
+              type="email"
+              name="email"
+              onChange={handleChange}
+              value={data?.email}
+            />
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              placeholder="******"
+              required
+              type="password"
+              name="password"
+              onChange={handleChange}
+              value={data?.password}
+            />
+            <Button
+              onClick={() => navigate("/forgot-password")}
+              variant="link"
+              size="sm"
+            >
+              Forgot Password
+            </Button>
+            <Button type="submit" className="w-full">
+              Login
+            </Button>
           </form>
-        </CardContent>
-        <CardFooter className="flex flex-col">
-          <div className="flex justify-center items-center gap-2 mb-3">
-            <Separator className="h-[2px] w-24" />
-            <p>or</p>
-            <Separator className="h-[2px] w-24" />
+          <div className="flex items-center space-x-2">
+            <hr className="flex-grow border-zinc-200 dark:border-zinc-700" />
+            <span className="text-zinc-400 dark:text-zinc-300 text-sm">OR</span>
+            <hr className="flex-grow border-zinc-200 dark:border-zinc-700" />
           </div>
-          <Button onClick={GoogleAuth} variant="default" className="w-full">
-            Google Login
+          <Button
+            onClick={GoogleAuth}
+            className="w-full bg-[#4285F4] text-white"
+            variant="outline"
+          >
+            <div className="flex items-center justify-center">
+              <LuChrome className="w-5 h-5 mr-2" />
+              Login with Google
+            </div>
           </Button>
-          <Link to="/signup" className="text-xs my-2 text-primary">
-            Don't have account ? Signup
-          </Link>
-        </CardFooter>
-      </Card>
-    </section>
+          <Button
+            onClick={() => navigate("/signup")}
+            variant="link"
+            className="flex gap-1 w-full"
+          >
+            <span>Don't Have account?</span>
+            <span className="text-blue-500"> Signup</span>
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
-
 export default Login;

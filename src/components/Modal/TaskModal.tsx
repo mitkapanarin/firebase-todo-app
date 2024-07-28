@@ -8,53 +8,46 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import TaskForm from "../Form/TaskForm";
 import { FC } from "react";
-import { NewTaskType } from "@/types/types";
 
 interface TaskModalProps {
-  newTask: NewTaskType;
-  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  createTaskFn: () => Promise<void>;
-  handleDateChange: (date: Date) => void;
-  handleStatusChange: (status: string) => void;
+  buttonText: string;
+  onConfirm: () => Promise<void>;
+  children: React.ReactNode;
+  dialogueTitle: string;
+  dialogueDescription: string;
+  confirmButtonText: string;
 }
 
 const TaskModal: FC<TaskModalProps> = ({
-  handleInput,
-  newTask,
-  createTaskFn,
-  handleDateChange,
-  handleStatusChange,
+  onConfirm,
+  children,
+  buttonText,
+  dialogueDescription,
+  dialogueTitle,
+  confirmButtonText,
 }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Add Task</Button>
+        <Button variant="default">{buttonText}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            createTaskFn();
+            onConfirm();
           }}
         >
           <DialogHeader>
-            <DialogTitle>Create New Task</DialogTitle>
-            <DialogDescription>
-              Create A new task here. Click save when you're done.
-            </DialogDescription>
+            <DialogTitle>{dialogueTitle}</DialogTitle>
+            <DialogDescription>{dialogueDescription}</DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <TaskForm
-              {...newTask}
-              handleStatusChange={handleStatusChange}
-              handleInput={handleInput}
-              handleDateChange={handleDateChange}
-            />
-          </div>
+          <div className="grid gap-4">{children}</div>
           <DialogFooter>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit" className="w-full">
+              {confirmButtonText}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

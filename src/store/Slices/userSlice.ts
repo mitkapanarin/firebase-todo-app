@@ -1,20 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-
-interface UserState {
-  uid: string;
-  name: string;
-  email: string;
-  photoURL: string;
-  phoneNumber: string;
-}
+import { UserState } from "../../types/interface";
 
 export const initialState: UserState = {
   uid: "",
   name: "",
   email: "",
   photoURL: "",
-  phoneNumber: "",
+  emailVerified: false,
 };
 
 export const userDataSlice = createSlice({

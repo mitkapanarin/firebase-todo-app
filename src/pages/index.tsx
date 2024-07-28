@@ -1,19 +1,33 @@
 import Home from "./Home";
-import ForgotPassword from "./ForgotPassword";
-import ResetPassword from "./ResetPassword";
 import Login from "./Login";
 import Signup from "./Signup";
+import ResetPassword from "./ResetPassword";
+import ForgotPassword from "./ForgotPassword";
 import ErrorPage from "./ErrorPage";
+import Pricing from "./Pricing";
+import UseCases from "./UseCases";
+import Contact from "./Contact";
 import Tasks from "./Tasks";
-import Profile from "./Profile";
+import ActivityLogs from "./ActivityLogs";
+
+//  dashboard
+import ProfilePage from "./Dashboard/ProfilePage";
+import DetailsPage from "./Dashboard/DetailsPage";
 
 export {
-  ForgotPassword,
   Home,
+  Signup,
   Login,
   ResetPassword,
-  Signup,
+  ForgotPassword,
   ErrorPage,
+  Pricing,
+  UseCases,
+  Contact,
   Tasks,
-  Profile,
+  ActivityLogs,
+
+  // dashboard
+  ProfilePage,
+  DetailsPage,
 };
