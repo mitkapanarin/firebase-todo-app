@@ -34,7 +34,6 @@ const DetailsPage = () => {
     uid: "",
     universityName: "",
   });
-  // console.log(data);
 
   useEffect(() => {
     setData(profileData as IUserData);
